@@ -4,7 +4,7 @@
 
 ! special
 *.foreground: #93a1a1
-*.background: #141c21
+*.background: [85]#141c21
 *.cursorColor: #afbfbf
 
 ! black
@@ -59,6 +59,5 @@ URxvt.saveline: 2048
 URxvt.scrollBar: false
 URxvt.scrollBar_right: false
 URxvt.urgentOnBell: true
-URxvt.depth: 24
+URxvt.depth: 32
 URxvt.iso14755: false
-
