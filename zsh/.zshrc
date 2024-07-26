@@ -13,8 +13,11 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
-#  Add 256 color support in terminal
+#  Enable 256 color support in terminal
 export TERM="xterm-256color"
 
 # Enable powerlevel9k ttheme
 source /usr/share/powerlevel9k/powerlevel9k.zsh-theme
+
+# Autostart Neofetch
+# neofetch
