@@ -51,8 +51,9 @@ if [ -z "$USER_HOME" ]; then
 fi
 
 # Create directories under the user's home directory using sudo
-sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/tmp"
+#sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/tmp" # created manually
 sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.config/i3"
+sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/Pictures/Wallpapers"
 
 echo "Directories created successfully under $USER_HOME."
 
@@ -60,20 +61,8 @@ echo "Directories created successfully under $USER_HOME."
 # Copy files from cloned repo into target directories.
 echo "Copying custom config files..."
 
-# Example: Copy i3 config file (adjust paths as needed)
-cp "$USER_HOME/tmp/i3/config" "$USER_HOME/.config/i3/"
-if [ $? -ne 0 ]; then
-   echo "Error copying i3 configuration file."
-   exit 1
-fi
-
-echo "i3 config copied successfully! You can find it at $USER_HOME/.config/i3/config"
-#########################################
-# Copy files from cloned repo into target directories.
-echo "Copying custom config files..."
-
 # Copy i3 file.
-cp $USER_HOME/tmp/i3/config "$USER_HOME/.config/i3/"
+cp $USER_HOME/tmp/workstation-config/i3/config "$USER_HOME/.config/i3/"
 if [ $? -ne 0 ]; then
    echo "Error copying bash configuration file."
    exit 1
@@ -82,7 +71,7 @@ fi
 echo "i3 config copied successfully! You can find it at $USER_HOME/.config/i3/config"
 
 # Copy wallpaper file.
-cp $USER_HOME/tmp/wallpapers/Wallpaper-254.png "$USER_HOME/Pictures/Wallpapers/Wallpaper-254.png"
+cp $USER_HOME/tmp/workstation-config/wallpapers/Wallpaper-254.png "$USER_HOME/Pictures/Wallpapers/Wallpaper-254.png"
 if [ $? -ne 0 ]; then
    echo "Error copying wallpaper file."
    exit 1
