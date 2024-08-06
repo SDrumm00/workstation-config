@@ -121,4 +121,3 @@ cleanup_tmp_directory() {
 trap cleanup_tmp_directory EXIT
 
 # TODO
-# add xrandr
