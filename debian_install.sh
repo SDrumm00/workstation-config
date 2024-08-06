@@ -98,3 +98,5 @@ cleanup_tmp_directory() {
 trap cleanup_tmp_directory EXIT
 
 # TODO
+# fix alacritty in i3 config
+# i3status not autostarting
