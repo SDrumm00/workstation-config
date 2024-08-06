@@ -42,6 +42,17 @@ done
 echo "Installation complete!"
 
 #########################################
+## System Upgrade
+echo "Performing system upgrade..."
+
+if ! apt-get update && apt-get upgrade -y; then
+    echo "Failed to upgrade the system."
+    exit 1
+fi
+
+echo "System upgrade complete!"
+
+#########################################
 ## Make directories for custom config files
 echo "Creating directories for custom configs..."
 
@@ -98,5 +109,4 @@ cleanup_tmp_directory() {
 trap cleanup_tmp_directory EXIT
 
 # TODO
-# fix alacritty in i3 config
-# i3status not autostarting
+# add xrandr
