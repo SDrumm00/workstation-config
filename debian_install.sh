@@ -41,40 +41,33 @@ echo "Installation complete!"
 ## Make directories for custom config files
 echo "Creating directories for custom configs..."
 
-# Get the current user's username
-USERNAME=$(whoami)
-
-# Check if we're running as root (using sudo)
-if [ "$EUID" -ne 0 ]; then
-    echo "Please run this script with sudo."
-    exit 1
-fi
-
-# Get the home directory of the current user
-USER_HOME=$(eval echo ~$USERNAME)
+# Get the home directory of the current user under sudo context
+USER_HOME="$HOME"
 
 # Check if we got a valid home directory path
 if [ -z "$USER_HOME" ]; then
-    echo "Home directory for user $USERNAME not found."
+    echo "Home directory not found."
     exit 1
 fi
 
 # Create directories under the user's home directory using sudo
-sudo -u "$USERNAME" mkdir -p "$USER_HOME/tmp"
-sudo -u "$USERNAME" mkdir -p "$USER_HOME/.config/i3"
+sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/tmp"
+sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.config/i3"
 
 echo "Directories created successfully under $USER_HOME."
 
 #########################################
-# Clone workstation-config git repo.
-# git clone https://github.com/SDrumm00/workstation-config.git $USER_HOME/tmp
-# if [ $? -ne 0 ]; then
-#     echo "Failed to clone workstation-config repository!"
-#     exit 1
-# fi
+# Copy files from cloned repo into target directories.
+echo "Copying custom config files..."
 
-# echo "Workstation config cloned successfully! You can find it at $USER_HOME/tmp"
+# Example: Copy i3 config file (adjust paths as needed)
+cp "$USER_HOME/tmp/i3/config" "$USER_HOME/.config/i3/"
+if [ $? -ne 0 ]; then
+   echo "Error copying i3 configuration file."
+   exit 1
+fi
 
+echo "i3 config copied successfully! You can find it at $USER_HOME/.config/i3/config"
 #########################################
 # Copy files from cloned repo into target directories.
 echo "Copying custom config files..."
