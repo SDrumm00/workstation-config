@@ -23,6 +23,7 @@ PACKAGES_TO_INSTALL=(
   "dmenu"
   "btop"
   "neofetch"
+  "x11-xserver-utils" # xrandr
 )
 
 echo "Installing $PACKAGES_TO_INSTALL..."
