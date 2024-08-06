@@ -57,14 +57,26 @@ echo "System upgrade complete!"
 
 #########################################
 # Install Nerd Fonts - Fira Code system wide
+# Define the directory where you want to clone the repo
+CLONE_DIR="$HOME/tmp/nerd-fonts"
+
+# Ensure the directory exists and is empty
+sudo -u "$SUDO_USER" mkdir -p "$CLONE_DIR"
+
 # fetch the fonts
 git clone --filter=blob:none --sparse https://github.com/ryanoasis/nerd-fonts.git
-cd "$USER_HOME/tmp"
+cd "$CLONE_DIR"
+
+# Perform sparse checkout to fetch only the necessary fonts
 git sparse-checkout add patched-fonts/IBMPlexMono
+
 # create installation directories
 sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.local/share/fonts/"
+
 # install the fonts
 ./install.sh IBMPlexMono
+
+echo "Nerd Fonts - IBMPlexMono installed successfully in $FONTS_DIR"
 
 #########################################
 ## Make directories for custom config files
