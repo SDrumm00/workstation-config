@@ -215,8 +215,8 @@ exec_always --no-startup-id feh --bg-fill /home/scott/Pictures/Wallpapers/Wallpa
 exec_always --no-startup-id picom --config /home/scott/.config/picom/picom.conf
 
 # Monitor refresh rates using XRandR
-exec_always --no-startup-id xrandr --output DP-1 --mode 2560x1440 --rate 144
-# exec_always --no-startup-id xrandr --output Virtual-1 --mode 1920x1080
+# exec_always --no-startup-id xrandr --output DP-1 --mode 2560x1440 --rate 60
+exec_always --no-startup-id xrandr --output Virtual-1 --mode 1920x1080 --rate 60
 
 # Launch Polybar Status Bar
 # exec_always --no-startup-id ~/.config/polybar/launch.sh --forest
