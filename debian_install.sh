@@ -44,8 +44,14 @@ echo "Creating directories for custom configs..."
 # Get the current user's username
 USERNAME=$(whoami)
 
+# Check if we're running as root (using sudo)
+if [ "$EUID" -ne 0 ]; then
+    echo "Please run this script with sudo."
+    exit 1
+fi
+
 # Get the home directory of the current user
-USER_HOME=$(eval echo "~$USERNAME")
+USER_HOME=$(eval echo ~$USERNAME)
 
 # Check if we got a valid home directory path
 if [ -z "$USER_HOME" ]; then
@@ -53,18 +59,11 @@ if [ -z "$USER_HOME" ]; then
     exit 1
 fi
 
-# Create directories under the user's home directory
-mkdir -p "$USER_HOME/tmp"
-mkdir -p "$USER_HOME/.config/i3"
+# Create directories under the user's home directory using sudo
+sudo -u "$USERNAME" mkdir -p "$USER_HOME/tmp"
+sudo -u "$USERNAME" mkdir -p "$USER_HOME/.config/i3"
 
 echo "Directories created successfully under $USER_HOME."
-
-# Additional configuration files will be placed here:
-echo ""
-echo "tmp: $USER_HOME/tmp"
-echo "i3: $USER_HOME/.config/i3/"
-
-echo "All directories created successfully."
 
 #########################################
 # Clone workstation-config git repo.
