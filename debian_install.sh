@@ -56,9 +56,22 @@ fi
 echo "System upgrade complete!"
 
 #########################################
+## Make directories for custom config files
+echo "Creating directories for custom configs..."
+
+# Get the home directory of the current user under sudo context
+USER_HOME=$(eval echo ~$SUDO_USER)
+
+# Check if we got a valid home directory path
+if [ -z "$USER_HOME" ]; then
+    echo "Home directory not found."
+    exit 1
+fi
+
+#########################################
 # Install Nerd Fonts - Fira Code system wide
 # Define the directory where you want to clone the repo
-CLONE_DIR="$HOME/tmp/nerd-fonts"
+CLONE_DIR="$USER_HOME/tmp/nerd-fonts"
 
 # Ensure the directory exists and is empty
 sudo -u "$SUDO_USER" mkdir -p "$CLONE_DIR"
@@ -77,19 +90,6 @@ sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.local/share/fonts/"
 ./install.sh IBMPlexMono
 
 echo "Nerd Fonts - IBMPlexMono installed successfully in $FONTS_DIR"
-
-#########################################
-## Make directories for custom config files
-echo "Creating directories for custom configs..."
-
-# Get the home directory of the current user under sudo context
-USER_HOME=$(eval echo ~$SUDO_USER)
-
-# Check if we got a valid home directory path
-if [ -z "$USER_HOME" ]; then
-    echo "Home directory not found."
-    exit 1
-fi
 
 #########################################
 # Copy files from cloned repo into target directories.
