@@ -81,6 +81,15 @@ fi
 
 echo "i3 config copied successfully! You can find it at $USER_HOME/.config/i3/config"
 
+# Copy wallpaper file.
+cp $USER_HOME/tmp/wallpapers/Wallpaper-254.png "$USER_HOME/Pictures/Wallpapers/Wallpaper-254.png"
+if [ $? -ne 0 ]; then
+   echo "Error copying wallpaper file."
+   exit 1
+fi
+
+echo "Wallpapers successfully! You can find it at $USER_HOME/Pictures/Wallpapers/"
+
 #########################################
 ## Clean up temporary directory on successful completion
 
