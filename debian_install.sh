@@ -72,6 +72,7 @@ fi
 #sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/tmp" # created manually
 sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.config/i3"
 sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/Pictures/Wallpapers"
+sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.config/picom"
 
 echo "Directories created successfully under $USER_HOME."
 
