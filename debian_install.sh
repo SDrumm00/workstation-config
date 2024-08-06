@@ -95,7 +95,16 @@ if [ $? -ne 0 ]; then
    exit 1
 fi
 
-echo "Wallpapers successfully! You can find it at $USER_HOME/Pictures/Wallpapers/"
+echo "Wallpapers copied successfully! You can find it at $USER_HOME/Pictures/Wallpapers/"
+
+# Copy picom config file.
+cp $USER_HOME/tmp/workstation-config/picom/picom.conf "$USER_HOME/.config/picom"
+if [ $? -ne 0 ]; then
+   echo "Error copying picom conf file."
+   exit 1
+fi
+
+echo "Picom config file copied successfully! You can find it at $USER_HOME/.config/picom"
 
 #########################################
 ## Clean up temporary directory on successful completion
