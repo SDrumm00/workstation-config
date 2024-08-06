@@ -121,3 +121,5 @@ cleanup_tmp_directory() {
 trap cleanup_tmp_directory EXIT
 
 # TODO
+# install nerdfonts and FiraCode
+# install zsh
