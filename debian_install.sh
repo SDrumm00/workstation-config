@@ -20,6 +20,7 @@ PACKAGES_TO_INSTALL=(
   "i3lock"
   "i3lock-fancy"
   "i3status"
+  "dmenu"
 )
 
 echo "Installing $PACKAGES_TO_INSTALL..."
@@ -97,6 +98,3 @@ cleanup_tmp_directory() {
 trap cleanup_tmp_directory EXIT
 
 # TODO
-# add i3status
-# add i3lock
-# add dmenu
