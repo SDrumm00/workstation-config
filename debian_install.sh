@@ -61,30 +61,30 @@ echo "Directories created successfully under $USER_HOME."
 
 # Additional configuration files will be placed here:
 echo ""
-echo "tmp: $HOME/tmp"
-echo "i3: $HOME/.config/i3/"
+echo "tmp: $USER_HOME/tmp"
+echo "i3: $USER_HOME/.config/i3/"
 
 echo "All directories created successfully."
 
 #########################################
 # Clone workstation-config git repo.
-git clone https://github.com/SDrumm00/workstation-config.git $HOME/tmp
+git clone https://github.com/SDrumm00/workstation-config.git $USER_HOME/tmp
 if [ $? -ne 0 ]; then
     echo "Failed to clone workstation-config repository!"
     exit 1
 fi
 
-echo "Workstation config cloned successfully! You can find it at $HOME/tmp"
+echo "Workstation config cloned successfully! You can find it at $USER_HOME/tmp"
 
 #########################################
 # Copy files from cloned repo into target directories.
 echo "Copying custom config files..."
 
 # Copy i3 file.
-cp $HOME/tmp/i3/config "$HOME/.config/i3/"
+cp $USER_HOME/tmp/i3/config "$USER_HOME/.config/i3/"
 if [ $? -ne 0 ]; then
    echo "Error copying bash configuration file."
    exit 1
 fi
 
-echo "i3 config copied successfully! You can find it at $HOME/.config/i3/config"
+echo "i3 config copied successfully! You can find it at $USER_HOME/.config/i3/config"
