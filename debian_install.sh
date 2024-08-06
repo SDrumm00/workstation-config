@@ -41,11 +41,26 @@ echo "Installation complete!"
 ## Make directories for custom config files
 echo "Creating directories for custom configs..."
 
-mkdir -p "$HOME/tmp"
-mkdir -p "$HOME/.config/i3"
+# Get the current user's username
+USERNAME=$(whoami)
+
+# Get the home directory of the current user
+USER_HOME=$(eval echo "~$USERNAME")
+
+# Check if we got a valid home directory path
+if [ -z "$USER_HOME" ]; then
+    echo "Home directory for user $USERNAME not found."
+    exit 1
+fi
+
+# Create directories under the user's home directory
+mkdir -p "$USER_HOME/tmp"
+mkdir -p "$USER_HOME/.config/i3"
+
+echo "Directories created successfully under $USER_HOME."
 
 # Additional configuration files will be placed here:
- echo ""
+echo ""
 echo "tmp: $HOME/tmp"
 echo "i3: $HOME/.config/i3/"
 
