@@ -127,6 +127,12 @@ echo "Wallpapers copied successfully! You can find it at $USER_HOME/Pictures/Wal
 sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.config/picom"
 
 # Copy files
+# Check if target directory exists, create if it doesn't
+PICOM_CONFIG_DIR="$USER_HOME/.config/picom"
+if [ ! -d "$PICOM_CONFIG_DIR" ]; then
+    sudo -u "$SUDO_USER" mkdir -p "$PICOM_CONFIG_DIR"
+fi
+
 cp $USER_HOME/tmp/workstation-config/picom/picom.conf "$USER_HOME/.config/picom"
 if [ $? -ne 0 ]; then
    echo "Error copying picom conf file."
@@ -152,4 +158,5 @@ trap cleanup_tmp_directory EXIT
 # TODO
 # install nerdfonts and FiraCode
 # sstill need to configure the fonts
+# make sure to do checks such as the directory already exists therefore skip this step
 # install zsh
