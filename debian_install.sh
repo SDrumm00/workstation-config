@@ -42,7 +42,7 @@ echo "Installation complete!"
 echo "Creating directories for custom configs..."
 
 # Get the home directory of the current user under sudo context
-USER_HOME="$HOME"
+USER_HOME=$(eval echo ~$SUDO_USER)
 
 # Check if we got a valid home directory path
 if [ -z "$USER_HOME" ]; then
