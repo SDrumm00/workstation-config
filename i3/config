@@ -230,4 +230,25 @@ exec_always --no-startup-id redshift -l 39.89958:-83.45510
 # Launch Conky customized
 # exec_always --no-startup-id conky -c ~/.config/conky/conky.conf
 
+# Start i3bar to display a workspace bar (plus the system information i3status
+# https://i3wm.org/docs/userguide.html#_configuring_i3bar
+bar {
+#     output            LVDS1
+    status_command    i3status
+    position          top
+    mode              dock
+    workspace_buttons yes
+    tray_output       primary
 
+#     font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+
+    colors {
+        background #000000
+        statusline #ffffff
+
+        focused_workspace  #ffffff #285577
+        active_workspace   #ffffff #333333
+        inactive_workspace #888888 #222222
+        urgent_workspace   #ffffff #900000
+    }
+}
