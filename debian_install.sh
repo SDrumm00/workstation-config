@@ -17,6 +17,9 @@ PACKAGES_TO_INSTALL=(
   "git"
   "wget"
   "curl"
+  "i3lock"
+  "i3lock-fancy"
+  "i3status"
 )
 
 echo "Installing $PACKAGES_TO_INSTALL..."
@@ -94,5 +97,6 @@ cleanup_tmp_directory() {
 trap cleanup_tmp_directory EXIT
 
 # TODO
-# add wallpaper background directory and load wallpapers
-# configure feh with wallpaper
+# add i3status
+# add i3lock
+# add dmenu
