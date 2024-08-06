@@ -209,7 +209,7 @@ default_border pixel 2
 
 ########## Auto Start Applications
 # Feh background app
-exec_always --no-startup-id feh --bg-fill /home/scott/Pictures/Wallpapers/pinecone.jpg
+exec_always --no-startup-id feh --bg-fill /home/scott/Pictures/Wallpapers/Wallpaper-254.png
 
 # Compositor Picom autostart
 exec_always --no-startup-id picom --config /home/scott/.config/picom/picom.conf

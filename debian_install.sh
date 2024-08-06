@@ -80,3 +80,21 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "i3 config copied successfully! You can find it at $USER_HOME/.config/i3/config"
+
+#########################################
+## Clean up temporary directory on successful completion
+
+# Define a function to clean up temporary directory
+cleanup_tmp_directory() {
+    if [ -d "$USER_HOME/tmp" ]; then
+        rm -r "$USER_HOME/tmp"
+        echo "Temporary directory removed."
+    fi
+}
+
+# Register the cleanup function to be called on EXIT
+trap cleanup_tmp_directory EXIT
+
+# TODO
+# add wallpaper background directory and load wallpapers
+# configure feh with wallpaper
