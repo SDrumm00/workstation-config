@@ -68,13 +68,13 @@ echo "All directories created successfully."
 
 #########################################
 # Clone workstation-config git repo.
-git clone https://github.com/SDrumm00/workstation-config.git $USER_HOME/tmp
-if [ $? -ne 0 ]; then
-    echo "Failed to clone workstation-config repository!"
-    exit 1
-fi
+# git clone https://github.com/SDrumm00/workstation-config.git $USER_HOME/tmp
+# if [ $? -ne 0 ]; then
+#     echo "Failed to clone workstation-config repository!"
+#     exit 1
+# fi
 
-echo "Workstation config cloned successfully! You can find it at $USER_HOME/tmp"
+# echo "Workstation config cloned successfully! You can find it at $USER_HOME/tmp"
 
 #########################################
 # Copy files from cloned repo into target directories.
