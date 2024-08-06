@@ -77,11 +77,12 @@ CLONE_DIR="$USER_HOME/tmp/nerd-fonts"
 sudo -u "$SUDO_USER" mkdir -p "$CLONE_DIR"
 
 # fetch the fonts
-git clone --filter=blob:none --sparse https://github.com/ryanoasis/nerd-fonts.git
+git clone --depth 1 --filter=blob:none --sparse https://github.com/ryanoasis/nerd-fonts.git "$CLONE_DIR"
 cd "$CLONE_DIR"
 
 # Perform sparse checkout to fetch only the necessary fonts
-git sparse-checkout add patched-fonts/IBMPlexMono
+git sparse-checkout init --cone
+git sparse-checkout set patched-fonts/IBMPlexMono
 
 # create installation directories
 sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.local/share/fonts/"
