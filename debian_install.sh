@@ -10,7 +10,7 @@ PACKAGES_TO_INSTALL=(
   "xorg"
   "firefox-esr"
   "i3"
-  "alacritty"
+  "stterm"
   "feh"
   "picom"
   "redshift"
