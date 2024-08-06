@@ -27,7 +27,7 @@ if ! apt-get update -qq; then
     exit 1
 fi
 
- Install packages.
+# Install packages.
 for package in "${PACKAGES_TO_INSTALL[@]}"; do
    if ! apt-get install -y "$package" ; then
        echo "Failed to install $package: $(apt-get config | grep 'APT::Error::Status')"
