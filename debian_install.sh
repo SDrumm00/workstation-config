@@ -56,6 +56,17 @@ fi
 echo "System upgrade complete!"
 
 #########################################
+# Install Nerd Fonts - Fira Code system wide
+# fetch the fonts
+git clone --filter=blob:none --sparse git@github.com:ryanoasis/nerd-fonts "$USER_HOME/tmp/"
+cd "$USER_HOME/tmp"
+git sparse-checkout add patched-fonts/IBMPlexMono
+# create installation directories
+sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.local/share/fonts/"
+# install the fonts
+./install.sh IBMPlexMono
+
+#########################################
 ## Make directories for custom config files
 echo "Creating directories for custom configs..."
 
@@ -68,19 +79,15 @@ if [ -z "$USER_HOME" ]; then
     exit 1
 fi
 
-# Create directories under the user's home directory using sudo
-#sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/tmp" # created manually
-sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.config/i3"
-sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/Pictures/Wallpapers"
-sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.config/picom"
-
-echo "Directories created successfully under $USER_HOME."
-
 #########################################
 # Copy files from cloned repo into target directories.
 echo "Copying custom config files..."
 
-# Copy i3 file.
+# i3 config file
+# Make dir
+sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.config/i3"
+
+# copy files
 cp $USER_HOME/tmp/workstation-config/i3/config "$USER_HOME/.config/i3/"
 if [ $? -ne 0 ]; then
    echo "Error copying bash configuration file."
@@ -89,7 +96,11 @@ fi
 
 echo "i3 config copied successfully! You can find it at $USER_HOME/.config/i3/config"
 
-# Copy wallpaper file.
+# Wallpapers
+# Make dir
+sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/Pictures/Wallpapers"
+
+# Copy files
 cp $USER_HOME/tmp/workstation-config/wallpapers/Wallpaper-254.png "$USER_HOME/Pictures/Wallpapers/Wallpaper-254.png"
 if [ $? -ne 0 ]; then
    echo "Error copying wallpaper file."
@@ -98,7 +109,11 @@ fi
 
 echo "Wallpapers copied successfully! You can find it at $USER_HOME/Pictures/Wallpapers/"
 
-# Copy picom config file.
+# Picom config file
+# Make dir
+sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.config/picom"
+
+# Copy files
 cp $USER_HOME/tmp/workstation-config/picom/picom.conf "$USER_HOME/.config/picom"
 if [ $? -ne 0 ]; then
    echo "Error copying picom conf file."
@@ -123,4 +138,5 @@ trap cleanup_tmp_directory EXIT
 
 # TODO
 # install nerdfonts and FiraCode
+# sstill need to configure the fonts
 # install zsh
