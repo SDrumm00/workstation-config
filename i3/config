@@ -219,7 +219,7 @@ exec_always --no-startup-id xrandr --output DP-1 --mode 2560x1440 --rate 144
 # exec_always --no-startup-id xrandr --output Virtual-1 --mode 1920x1080
 
 # Launch Polybar Status Bar
-exec_always --no-startup-id ~/.config/polybar/launch.sh --forest
+# exec_always --no-startup-id ~/.config/polybar/launch.sh --forest
 
 # Launch SCTD (Set Color Temp Daemon) as startup
 # exec_always --no-startup-id sctd --latitude 39.98333 --longitude -82.98333
