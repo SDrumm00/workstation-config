@@ -21,6 +21,8 @@ PACKAGES_TO_INSTALL=(
   "i3lock-fancy"
   "i3status"
   "dmenu"
+  "btop"
+  "neofetch"
 )
 
 echo "Installing $PACKAGES_TO_INSTALL..."
@@ -39,7 +41,7 @@ for package in "${PACKAGES_TO_INSTALL[@]}"; do
    fi
 done
 
-echo "Installation complete!"
+echo "Software installation complete!"
 
 #########################################
 ## System Upgrade
