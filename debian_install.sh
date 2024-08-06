@@ -58,7 +58,7 @@ echo "System upgrade complete!"
 #########################################
 # Install Nerd Fonts - Fira Code system wide
 # fetch the fonts
-git clone --filter=blob:none --sparse git@github.com:ryanoasis/nerd-fonts
+git clone --filter=blob:none --sparse https://github.com/ryanoasis/nerd-fonts.git
 cd "$USER_HOME/tmp"
 git sparse-checkout add patched-fonts/IBMPlexMono
 # create installation directories
