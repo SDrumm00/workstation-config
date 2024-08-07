@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Exit immediately if any command returns a non-zero status.
-set -e
+ # Exit immediately if any command returns a non-zero status.
+set -e 
 
 #########################################
 ## Software Installation Step
@@ -26,7 +26,7 @@ PACKAGES_TO_INSTALL=(
   "x11-xserver-utils" # xrandr
 )
 
-echo "Installing ${PACKAGES_TO_INSTALL[*]}..."
+echo "Installing $PACKAGES_TO_INSTALL..."
 
 # Update package list
 if ! apt-get update -qq; then
@@ -36,7 +36,7 @@ fi
 
 # Install packages.
 for package in "${PACKAGES_TO_INSTALL[@]}"; do
-   if ! apt-get install -y "$package"; then
+   if ! apt-get install -y "$package" ; then
        echo "Failed to install $package: $(apt-get config | grep 'APT::Error::Status')"
        exit 1
    fi
@@ -90,7 +90,7 @@ sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.local/share/fonts/"
 # install the fonts
 ./install.sh IBMPlexMono
 
-echo "Nerd Fonts - IBMPlexMono installed successfully in $USER_HOME/.local/share/fonts/NerdFonts"
+echo "Nerd Fonts - IBMPlexMono installed successfully in /root/.local/share/fonts/NerdFonts"
 
 #########################################
 # Copy files from cloned repo into target directories.
@@ -101,9 +101,9 @@ echo "Copying custom config files..."
 sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.config/i3"
 
 # copy files
-sudo -u "$SUDO_USER" cp "$USER_HOME/tmp/workstation-config/i3/config" "$USER_HOME/.config/i3/"
+cp $USER_HOME/tmp/workstation-config/i3/config "$USER_HOME/.config/i3/"
 if [ $? -ne 0 ]; then
-   echo "Error copying i3 configuration file."
+   echo "Error copying bash configuration file."
    exit 1
 fi
 
@@ -114,7 +114,7 @@ echo "i3 config copied successfully! You can find it at $USER_HOME/.config/i3/co
 sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/Pictures/Wallpapers"
 
 # Copy files
-sudo -u "$SUDO_USER" cp "$USER_HOME/tmp/workstation-config/wallpapers/Wallpaper-254.png" "$USER_HOME/Pictures/Wallpapers/Wallpaper-254.png"
+cp $USER_HOME/tmp/workstation-config/wallpapers/Wallpaper-254.png "$USER_HOME/Pictures/Wallpapers/Wallpaper-254.png"
 if [ $? -ne 0 ]; then
    echo "Error copying wallpaper file."
    exit 1
@@ -126,7 +126,7 @@ echo "Wallpapers copied successfully! You can find it at $USER_HOME/Pictures/Wal
 # Check if target directory exists, create if it doesn't
 PICOM_CONFIG_DIR="$USER_HOME/.config/picom"
 if [ ! -d "$PICOM_CONFIG_DIR" ]; then
-    sudo -u "$SUDO_USER" mkdir -p "$PICOM_CONFIG_DIR"
+    mkdir -p "$PICOM_CONFIG_DIR"
     if [ $? -ne 0 ]; then
         echo "Error creating directory $PICOM_CONFIG_DIR."
         exit 1
@@ -134,7 +134,7 @@ if [ ! -d "$PICOM_CONFIG_DIR" ]; then
 fi
 
 # Copy files
-sudo -u "$SUDO_USER" cp "$USER_HOME/tmp/workstation-config/picom/picom.conf" "$PICOM_CONFIG_DIR"
+cp $USER_HOME/tmp/workstation-config/picom/picom.conf "$PICOM_CONFIG_DIR"
 if [ $? -ne 0 ]; then
    echo "Error copying picom conf file."
    exit 1
@@ -148,7 +148,7 @@ echo "Picom config file copied successfully! You can find it at $PICOM_CONFIG_DI
 # Define a function to clean up temporary directory and contents
 cleanup_tmp_directory() {
     if [ -d "$USER_HOME/tmp" ]; then
-        sudo -u "$SUDO_USER" rm -rf "$USER_HOME/tmp"
+        rm -rf "$USER_HOME/tmp"
         echo "Temporary directory removed."
     else
         echo "Temporary directory does not exist."
