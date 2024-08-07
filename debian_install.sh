@@ -62,6 +62,11 @@ echo "Creating directories for custom configs..."
 # Get the home directory of the current user under sudo context
 USER_HOME=$(eval echo ~$SUDO_USER)
 
+# Debugging Info
+echo "Running script as: $(whoami)"
+echo "SUDO_USER: $SUDO_USER"
+echo "USER_HOME: $USER_HOME"
+
 # Check if we got a valid home directory path
 if [ -z "$USER_HOME" ]; then
     echo "Home directory not found."
