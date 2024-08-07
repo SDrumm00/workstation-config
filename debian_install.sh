@@ -148,7 +148,7 @@ echo "Picom config file copied successfully! You can find it at $PICOM_CONFIG_DI
 # Define a function to clean up temporary directory and contents
 cleanup_tmp_directory() {
     if [ -d "$USER_HOME/tmp" ]; then
-        rm -rf "$USER_HOME/tmp"
+        sudo -u "$SUDO_USER" rm -rf "$USER_HOME/tmp"
         echo "Temporary directory removed."
     else
         echo "Temporary directory does not exist."
