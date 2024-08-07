@@ -90,7 +90,7 @@ sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.local/share/fonts/"
 # install the fonts
 ./install.sh IBMPlexMono
 
-echo "Nerd Fonts - IBMPlexMono installed successfully in $FONTS_DIR"
+echo "Nerd Fonts - IBMPlexMono installed successfully in /root/.local/share/fonts/NerdFonts"
 
 #########################################
 # Copy files from cloned repo into target directories.
@@ -158,7 +158,7 @@ cleanup_tmp_directory() {
 trap cleanup_tmp_directory EXIT
 
 # TODO
-# install nerdfonts and FiraCode
+# need to configure permissions on the directory the fonts were copied to "tmp/nerd-fonts"
 # still need to configure the fonts
 # make sure to do checks such as the directory already exists therefore skip this step
 # install zsh
