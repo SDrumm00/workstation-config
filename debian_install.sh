@@ -133,11 +133,17 @@ if [ ! -d "$PICOM_CONFIG_DIR" ]; then
     fi
 fi
 
-# Copy files
-cp $USER_HOME/tmp/workstation-config/picom/picom.conf "$PICOM_CONFIG_DIR"
-if [ $? -ne 0 ]; then
-   echo "Error copying picom conf file."
-   exit 1
+# Check if the picom.conf file already exists
+if [ ! -f "$PICOM_CONFIG_DIR/picom.conf" ]; then
+    # Copy files
+    sudo -u "$SUDO_USER" cp "$USER_HOME/tmp/workstation-config/picom/picom.conf" "$PICOM_CONFIG_DIR"
+    if [ $? -ne 0 ]; then
+       echo "Error copying picom conf file."
+       exit 1
+    fi
+    echo "Picom config file copied successfully! You can find it at $PICOM_CONFIG_DIR"
+else
+    echo "Picom config file already exists at $PICOM_CONFIG_DIR. Skipping copy."
 fi
 
 echo "Picom config file copied successfully! You can find it at $PICOM_CONFIG_DIR"
@@ -149,9 +155,9 @@ echo "Picom config file copied successfully! You can find it at $PICOM_CONFIG_DI
 cleanup_tmp_directory() {
     if [ -d "$USER_HOME/tmp" ]; then
         rm -rf "$USER_HOME/tmp"
-        echo "Temporary directory removed."
+        echo "tmp directory removed."
     else
-        echo "Temporary directory does not exist."
+        echo "tmp directory does not exist."
     fi
 }
 
