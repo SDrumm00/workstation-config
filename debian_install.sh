@@ -10,7 +10,7 @@ PACKAGES_TO_INSTALL=(
   "xorg"
   "firefox-esr"
   "i3"
-  "stterm"
+  "alacritty"
   "feh"
   "picom"
   "redshift"
@@ -159,6 +159,6 @@ trap cleanup_tmp_directory EXIT
 
 # TODO
 # install nerdfonts and FiraCode
-# sstill need to configure the fonts
+# still need to configure the fonts
 # make sure to do checks such as the directory already exists therefore skip this step
 # install zsh
