@@ -126,17 +126,21 @@ echo "Wallpapers copied successfully! You can find it at $USER_HOME/Pictures/Wal
 # Check if target directory exists, create if it doesn't
 PICOM_CONFIG_DIR="$USER_HOME/.config/picom"
 if [ ! -d "$PICOM_CONFIG_DIR" ]; then
-    sudo -u "$SUDO_USER" mkdir -p "$PICOM_CONFIG_DIR"
+    mkdir -p "$PICOM_CONFIG_DIR"
+    if [ $? -ne 0 ]; then
+        echo "Error creating directory $PICOM_CONFIG_DIR."
+        exit 1
+    fi
 fi
 
 # Copy files
-cp $USER_HOME/tmp/workstation-config/picom/picom.conf "$USER_HOME/.config/picom"
+cp $USER_HOME/tmp/workstation-config/picom/picom.conf "$PICOM_CONFIG_DIR"
 if [ $? -ne 0 ]; then
    echo "Error copying picom conf file."
    exit 1
 fi
 
-echo "Picom config file copied successfully! You can find it at $USER_HOME/.config/picom"
+echo "Picom config file copied successfully! You can find it at $PICOM_CONFIG_DIR"
 
 #########################################
 ## Clean up temporary directory on successful completion
