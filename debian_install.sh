@@ -179,7 +179,7 @@ if [ ! -f "$ALACRITTY_CONFIG_DIR/alacritty.toml" ]; then
     fi
     echo "Alacritty.toml file copied successfully! You can find it at $ALACRITTY_CONFIG_DIR"
 else
-    echo "Alacritty.toml file already exists at $ALACRITTY_CONFIG_DIR. Skipping copy."
+    echo "Alacritty.toml file already exists at $ALACRITTY_CONFIG_DIR... Skipping copy."
 fi
 
 #########################################
