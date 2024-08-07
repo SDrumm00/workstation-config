@@ -147,6 +147,30 @@ else
     echo "Picom config file already exists at $PICOM_CONFIG_DIR. Skipping copy."
 fi
 
+# Alacritty config file
+# Check if target directory exists, create if it doesn't
+ALACRITTY_CONFIG_DIR="$USER_HOME/.config/alacritty"
+if [ ! -d "$ALACRITTY_CONFIG_DIR" ]; then
+    mkdir -p "$ALACRITTY_CONFIG_DIR"
+    if [ $? -ne 0 ]; then
+        echo "Error creating directory $ALACRITTY_CONFIG_DIR."
+        exit 1
+    fi
+fi
+
+# Check if the alacritty.toml file already exists
+if [ ! -f "$ALACRITTY_CONFIG_DIR/alacritty.toml" ]; then
+    # Copy files
+    sudo -u "$SUDO_USER" cp "$USER_HOME/tmp/workstation-config/alacritty/alacritty.toml" "$ALACRITTY_CONFIG_DIR"
+    if [ $? -ne 0 ]; then
+       echo "Error copying alacritty.toml file."
+       exit 1
+    fi
+    echo "Alacritty.toml file copied successfully! You can find it at $ALACRITTY_CONFIG_DIR"
+else
+    echo "Alacritty.toml file already exists at $ALACRITTY_CONFIG_DIR. Skipping copy."
+fi
+
 #########################################
 ## Clean up temporary directory on successful completion
 

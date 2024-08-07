@@ -1,0 +1,19 @@
+# Config by Scott Drumm @ 2024
+[window]
+
+opacity = 0.9
+
+padding.x = 10
+padding.y = 10
+
+decorations = "Full"
+decorations_theme_variant = "Light" # "Dark"
+
+[font]
+
+normal.family = "BlexMono Nerd Font"
+bold.family = "BlexMono Nerd Font"
+italic.family = "BlexMono Nerd Font"
+bold_italic.family = "BlexMono Nerd Font"
+
+size = 12
