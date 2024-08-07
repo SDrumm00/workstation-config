@@ -123,16 +123,13 @@ fi
 echo "Wallpapers copied successfully! You can find it at $USER_HOME/Pictures/Wallpapers/"
 
 # Picom config file
-# Make dir
-sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.config/picom"
-
-# Copy files
 # Check if target directory exists, create if it doesn't
 PICOM_CONFIG_DIR="$USER_HOME/.config/picom"
 if [ ! -d "$PICOM_CONFIG_DIR" ]; then
     sudo -u "$SUDO_USER" mkdir -p "$PICOM_CONFIG_DIR"
 fi
 
+# Copy files
 cp $USER_HOME/tmp/workstation-config/picom/picom.conf "$USER_HOME/.config/picom"
 if [ $? -ne 0 ]; then
    echo "Error copying picom conf file."
