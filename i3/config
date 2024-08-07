@@ -239,8 +239,8 @@ bar {
     mode              dock
     workspace_buttons yes
     tray_output       primary
-    # font              pango:BlexMono Nerd Font-Regular 20
-    font              pango:DejaVu Sans Mono 18
+    font              pango:BlexMono Nerd Font-Regular 12
+    # font              pango:DejaVu Sans Mono 18
 
     colors {
         background #000000
