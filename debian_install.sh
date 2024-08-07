@@ -91,7 +91,7 @@ sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.local/share/fonts/"
 # https://github.com/ryanoasis/nerd-fonts/blob/master/install.sh
 ./install.sh -S IBMPlexMono # -S argument is for systemwide installation
 
-echo "Nerd Fonts - IBMPlexMono installed successfully in /root/.local/share/fonts/NerdFonts"
+echo "Nerd Fonts - IBMPlexMono installed successfully in /usr/local/share/fonts/NerdFonts"
 
 #########################################
 # Copy files from cloned repo into target directories.
