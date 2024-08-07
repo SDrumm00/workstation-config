@@ -146,8 +146,6 @@ else
     echo "Picom config file already exists at $PICOM_CONFIG_DIR. Skipping copy."
 fi
 
-echo "Picom config file copied successfully! You can find it at $PICOM_CONFIG_DIR"
-
 #########################################
 ## Clean up temporary directory on successful completion
 
