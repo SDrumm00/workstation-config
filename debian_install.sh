@@ -154,15 +154,15 @@ fi
 # Check if target directory exists, create if it doesn't
 ALACRITTY_CONFIG_DIR="$USER_HOME/.config/alacritty"
 if [ ! -d "$ALACRITTY_CONFIG_DIR" ]; then
-    mkdir -p "$ALACRITTY_CONFIG_DIR"
+    sudo -u "$SUDO_USER" mkdir -p "$ALACRITTY_CONFIG_DIR"
     if [ $? -ne 0 ]; then
         echo "Error creating directory $ALACRITTY_CONFIG_DIR."
         exit 1
     fi
 fi
 
-# set permissions on target directory
-sudo chown -R $USER:$USER $ALACRITTY_CONFIG_DIR
+# Set permissions on target directory
+sudo chown -R "$SUDO_USER":"$SUDO_USER" "$ALACRITTY_CONFIG_DIR"
 
 # Check if the alacritty.toml file already exists
 if [ ! -f "$ALACRITTY_CONFIG_DIR/alacritty.toml" ]; then
