@@ -144,11 +144,13 @@ echo "Picom config file copied successfully! You can find it at $USER_HOME/.conf
 #########################################
 ## Clean up temporary directory on successful completion
 
-# Define a function to clean up temporary directory
+# Define a function to clean up temporary directory and contents
 cleanup_tmp_directory() {
     if [ -d "$USER_HOME/tmp" ]; then
-        rm -r "$USER_HOME/tmp"
+        rm -rf "$USER_HOME/tmp"
         echo "Temporary directory removed."
+    else
+        echo "Temporary directory does not exist."
     fi
 }
 
