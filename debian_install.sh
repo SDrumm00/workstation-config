@@ -134,6 +134,9 @@ if [ ! -d "$PICOM_CONFIG_DIR" ]; then
     fi
 fi
 
+# set permissions on target directory
+sudo chown -R $USER:$USER $PICOM_CONFIG_DIR
+
 # Check if the picom.conf file already exists
 if [ ! -f "$PICOM_CONFIG_DIR/picom.conf" ]; then
     # Copy files
@@ -157,6 +160,9 @@ if [ ! -d "$ALACRITTY_CONFIG_DIR" ]; then
         exit 1
     fi
 fi
+
+# set permissions on target directory
+sudo chown -R $USER:$USER $ALACRITTY_CONFIG_DIR
 
 # Check if the alacritty.toml file already exists
 if [ ! -f "$ALACRITTY_CONFIG_DIR/alacritty.toml" ]; then
