@@ -140,7 +140,7 @@ if [ ! -d "$PICOM_CONFIG_DIR" ]; then
 fi
 
 # set permissions on target directory
-sudo chown -R $USER:$USER $PICOM_CONFIG_DIR
+sudo chown -R $SUDO_USER:$SUDO_USER $PICOM_CONFIG_DIR
 
 # Check if the picom.conf file already exists
 if [ ! -f "$PICOM_CONFIG_DIR/picom.conf" ]; then
