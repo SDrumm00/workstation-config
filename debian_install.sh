@@ -88,7 +88,8 @@ git sparse-checkout set patched-fonts/IBMPlexMono
 sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.local/share/fonts/"
 
 # install the fonts
-./install.sh IBMPlexMono
+# https://github.com/ryanoasis/nerd-fonts/blob/master/install.sh
+./install.sh -S IBMPlexMono # -S argument is for systemwide installation
 
 echo "Nerd Fonts - IBMPlexMono installed successfully in /root/.local/share/fonts/NerdFonts"
 
