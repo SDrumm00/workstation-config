@@ -199,7 +199,6 @@ cleanup_tmp_directory() {
 trap cleanup_tmp_directory EXIT
 
 # TODO
-# need to configure permissions on the directory the fonts were copied to "tmp/nerd-fonts"
-# still need to configure the fonts
+# still need to configure the fonts in the terminalcopied file
 # make sure to do checks such as the directory already exists therefore skip this step
 # install zsh
