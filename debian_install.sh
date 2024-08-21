@@ -211,7 +211,7 @@ else
 fi
 
 # Prompt user for confirmation
-read -p "Proceed with copying the wallpaper file? (Y/N): " USER_INPUT
+read -p "Proceed with overwriting the wallpaper file? (Y/N): " USER_INPUT
 
 # Convert user input to lowercase
 USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
@@ -219,11 +219,11 @@ USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
 # Check user input and proceed or skip the file copy
 if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
     # Copy the wallpaper file
-    echo "Copying wallpaper file..."
+    echo "Overwriting wallpaper file..."
     sudo -u "$SUDO_USER" cp -f "$WALLPAPER_FILE" "$WALLPAPER_DIR/" || { echo "Error copying wallpaper file."; exit 1; }
     echo "Wallpaper copied successfully! You can find it at $WALLPAPER_DIR/"
 else
-    echo "Skipping wallpaper copy operation."
+    echo "Skipping wallpaper operation."
 fi
 
 # Picom config file
@@ -249,7 +249,7 @@ else
 fi
 
 # Prompt user for confirmation
-read -p "Proceed with copying the Picom config file? (Y/N): " USER_INPUT
+read -p "Proceed with overwriting the Picom config file? (Y/N): " USER_INPUT
 
 # Convert user input to lowercase
 USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
@@ -257,11 +257,11 @@ USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
 # Check user input and proceed or skip the file copy
 if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
     # Copy the Picom config file
-    echo "Copying Picom config file..."
+    echo "Overwriting Picom config file..."
     sudo -u "$SUDO_USER" cp -f "$SOURCE_CONF_FILE" "$PICOM_CONF_FILE" || { echo "Error copying Picom config file."; exit 1; }
     echo "Picom config file copied successfully! You can find it at $PICOM_CONFIG_DIR"
 else
-    echo "Skipping Picom config file copy operation."
+    echo "Skipping Picom config file operation."
 fi
 
 # Alacritty config file
@@ -289,7 +289,7 @@ else
 fi
 
 # Prompt user for confirmation
-read -p "Proceed with copying the alacritty.toml file? (Y/N): " USER_INPUT
+read -p "Proceed with overwriting the alacritty.toml file? (Y/N): " USER_INPUT
 
 # Convert user input to lowercase
 USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
@@ -297,11 +297,11 @@ USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
 # Check user input and proceed or skip the file copy
 if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
     # Copy the alacritty.toml file
-    echo "Copying alacritty.toml file..."
+    echo "Overwriting alacritty.toml file..."
     sudo -u "$SUDO_USER" cp -f "$SOURCE_CONF_FILE" "$ALACRITTY_CONF_FILE" || { echo "Error copying alacritty.toml file."; exit 1; }
     echo "Alacritty.toml file copied successfully! You can find it at $ALACRITTY_CONFIG_DIR"
 else
-    echo "Skipping alacritty.toml file copy operation."
+    echo "Skipping alacritty.toml file operation."
 fi
 
 echo "######### Custom Configs Loaded #########"
