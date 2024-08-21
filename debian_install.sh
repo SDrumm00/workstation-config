@@ -26,14 +26,14 @@ PACKAGES_TO_INSTALL=(
   "x11-xserver-utils" # xrandr
 )
 
-echo "Updating package list..."
+echo "######### Updating Package List... #########"
 # Update package list
 if ! apt-get update -qq; then
     echo "Error updating package list!"
     exit 1
 fi
 
-echo "Installing packages..."
+echo "######### Installing Packages... #########"
 # Install packages.
 for package in "${PACKAGES_TO_INSTALL[@]}"; do
    if dpkg -l | grep -qw "$package"; then
@@ -47,13 +47,13 @@ for package in "${PACKAGES_TO_INSTALL[@]}"; do
    fi
 done
 
-echo "Software installation complete!"
+echo "######### Installation Complete #########"
 
 #########################################
 ## System Upgrade
 
 # Check if there are any upgradable packages
-echo "Checking for available updates..."
+echo "######### Checking System Upgrade... #########"
 
 # Update the package index to get the latest information
 if ! apt-get update -qq; then
@@ -72,10 +72,8 @@ if [ -n "$UPGRADEABLE_PACKAGES" ]; then
         exit 1
     fi
 else
-    echo "No updates available."
+    echo "######### No Upgrades Available #########"
 fi
-
-echo "System upgrade complete!"
 
 #########################################
 ## Make directories for custom config files
