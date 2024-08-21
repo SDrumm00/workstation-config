@@ -153,60 +153,53 @@ fi
 
 echo "Wallpaper copied successfully! You can find it at $WALLPAPER_DIR/"
 
-########################################################################################################
 # Picom config file
-# Check if target directory exists, create if it doesn't
 PICOM_CONFIG_DIR="$USER_HOME/.config/picom"
+PICOM_CONF_FILE="$PICOM_CONFIG_DIR/picom.conf"
+SOURCE_CONF_FILE="$USER_HOME/tmp/workstation-config/picom/picom.conf"
+
+# Ensure the target directory exists
 if [ ! -d "$PICOM_CONFIG_DIR" ]; then
-    mkdir -p "$PICOM_CONFIG_DIR"
-    if [ $? -ne 0 ]; then
-        echo "Error creating directory $PICOM_CONFIG_DIR."
-        exit 1
-    fi
+    echo "Creating directory $PICOM_CONFIG_DIR"
+    mkdir -p "$PICOM_CONFIG_DIR" || { echo "Error creating directory $PICOM_CONFIG_DIR."; exit 1; }
 fi
 
-# set permissions on target directory
-sudo chown -R $SUDO_USER:$SUDO_USER $PICOM_CONFIG_DIR
+# Set permissions on target directory
+sudo chown -R "$SUDO_USER:$SUDO_USER" "$PICOM_CONFIG_DIR"
 
 # Check if the picom.conf file already exists
-if [ ! -f "$PICOM_CONFIG_DIR/picom.conf" ]; then
-    # Copy files
-    sudo -u "$SUDO_USER" cp "$USER_HOME/tmp/workstation-config/picom/picom.conf" "$PICOM_CONFIG_DIR"
-    if [ $? -ne 0 ]; then
-       echo "Error copying picom conf file."
-       exit 1
-    fi
+if [ ! -f "$PICOM_CONF_FILE" ]; then
+    echo "Copying picom config file..."
+    sudo -u "$SUDO_USER" cp "$SOURCE_CONF_FILE" "$PICOM_CONFIG_DIR" || { echo "Error copying picom config file."; exit 1; }
     echo "Picom config file copied successfully! You can find it at $PICOM_CONFIG_DIR"
 else
     echo "Picom config file already exists at $PICOM_CONFIG_DIR. Skipping copy."
 fi
 
 # Alacritty config file
-# Check if target directory exists, create if it doesn't
 ALACRITTY_CONFIG_DIR="$USER_HOME/.config/alacritty"
+ALACRITTY_CONF_FILE="$ALACRITTY_CONFIG_DIR/alacritty.toml"
+SOURCE_CONF_FILE="$USER_HOME/tmp/workstation-config/alacritty/alacritty.toml"
+
+# Ensure the target directory exists
 if [ ! -d "$ALACRITTY_CONFIG_DIR" ]; then
-    sudo -u "$SUDO_USER" mkdir -p "$ALACRITTY_CONFIG_DIR"
-    if [ $? -ne 0 ]; then
-        echo "Error creating directory $ALACRITTY_CONFIG_DIR."
-        exit 1
-    fi
+    echo "Creating directory $ALACRITTY_CONFIG_DIR"
+    sudo -u "$SUDO_USER" mkdir -p "$ALACRITTY_CONFIG_DIR" || { echo "Error creating directory $ALACRITTY_CONFIG_DIR."; exit 1; }
 fi
 
-# Set permissions on target directory
-sudo chown -R "$SUDO_USER":"$SUDO_USER" "$ALACRITTY_CONFIG_DIR"
+# Set permissions on the target directory
+sudo chown -R "$SUDO_USER:$SUDO_USER" "$ALACRITTY_CONFIG_DIR"
 
 # Check if the alacritty.toml file already exists
-if [ ! -f "$ALACRITTY_CONFIG_DIR/alacritty.toml" ]; then
-    # Copy files
-    sudo -u "$SUDO_USER" cp "$USER_HOME/tmp/workstation-config/alacritty/alacritty.toml" "$ALACRITTY_CONFIG_DIR"
-    if [ $? -ne 0 ]; then
-       echo "Error copying alacritty.toml file."
-       exit 1
-    fi
+if [ ! -f "$ALACRITTY_CONF_FILE" ]; then
+    echo "Copying alacritty.toml file..."
+    sudo -u "$SUDO_USER" cp "$SOURCE_CONF_FILE" "$ALACRITTY_CONFIG_DIR" || { echo "Error copying alacritty.toml file."; exit 1; }
     echo "Alacritty.toml file copied successfully! You can find it at $ALACRITTY_CONFIG_DIR"
 else
     echo "Alacritty.toml file already exists at $ALACRITTY_CONFIG_DIR... Skipping copy."
 fi
+
+echo "######### Custom Configs Loaded #########"
 
 #########################################
 ## Clean up temporary directory on successful completion
