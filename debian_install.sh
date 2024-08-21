@@ -26,19 +26,24 @@ PACKAGES_TO_INSTALL=(
   "x11-xserver-utils" # xrandr
 )
 
-echo "Installing $PACKAGES_TO_INSTALL..."
-
+echo "Updating package list..."
 # Update package list
 if ! apt-get update -qq; then
     echo "Error updating package list!"
     exit 1
 fi
 
+echo "Installing packages..."
 # Install packages.
 for package in "${PACKAGES_TO_INSTALL[@]}"; do
-   if ! apt-get install -y "$package" ; then
-       echo "Failed to install $package: $(apt-get config | grep 'APT::Error::Status')"
-       exit 1
+   if dpkg -l | grep -qw "$package"; then
+       echo "$package is already installed. Skipping..."
+   else
+       echo "Installing $package..."
+       if ! apt-get install -y "$package" ; then
+           echo "Failed to install $package"
+           exit 1
+       fi
    fi
 done
 
@@ -201,3 +206,5 @@ trap cleanup_tmp_directory EXIT
 # TODO
 # make sure to do checks such as the directory already exists therefore skip this step
 # install zsh
+# install a login manager and customize it
+# install all my apps from my main machine
