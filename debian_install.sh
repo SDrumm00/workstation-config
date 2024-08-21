@@ -199,6 +199,5 @@ cleanup_tmp_directory() {
 trap cleanup_tmp_directory EXIT
 
 # TODO
-# still need to configure the fonts in the terminal copied file
 # make sure to do checks such as the directory already exists therefore skip this step
 # install zsh
