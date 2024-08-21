@@ -51,11 +51,28 @@ echo "Software installation complete!"
 
 #########################################
 ## System Upgrade
-echo "Performing system upgrade..."
 
-if ! apt-get update && apt-get upgrade -y; then
-    echo "Failed to upgrade the system."
+# Check if there are any upgradable packages
+echo "Checking for available updates..."
+
+# Update the package index to get the latest information
+if ! apt-get update -qq; then
+    echo "Error updating package list!"
     exit 1
+fi
+
+# Check for upgradable packages
+UPGRADEABLE_PACKAGES=$(apt list --upgradable 2>/dev/null | grep -E 'upgradable from' || true)
+
+if [ -n "$UPGRADEABLE_PACKAGES" ]; then
+    echo "Updates are available. Proceeding with system upgrade..."
+    # Perform system upgrade
+    if ! apt-get upgrade -y; then
+        echo "Failed to upgrade the system."
+        exit 1
+    fi
+else
+    echo "No updates available."
 fi
 
 echo "System upgrade complete!"
