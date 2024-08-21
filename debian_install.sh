@@ -26,14 +26,16 @@ PACKAGES_TO_INSTALL=(
   "x11-xserver-utils" # xrandr
 )
 
-echo "######### Updating Package List... #########"
+echo "######### Updating Package List #########"
 # Update package list
 if ! apt-get update -qq; then
     echo "Error updating package list!"
     exit 1
 fi
 
-echo "######### Installing Packages... #########"
+echo "######### Package List Updated #########"
+
+echo "######### Installing Packages #########"
 # Install packages.
 for package in "${PACKAGES_TO_INSTALL[@]}"; do
    if dpkg -l | grep -qw "$package"; then
@@ -53,7 +55,7 @@ echo "######### Installation Complete #########"
 ## System Upgrade
 
 # Check if there are any upgradable packages
-echo "######### Checking System Upgrade... #########"
+echo "######### Checking System Upgrade #########"
 
 # Update the package index to get the latest information
 if ! apt-get update -qq; then
