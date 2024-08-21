@@ -81,7 +81,14 @@ fi
 # Install Nerd Fonts - IBMPlexMono system wide
 echo "######### Installing Custom Fonts #########"
 
+# Define the clone directory
 CLONE_DIR="$USER_HOME/tmp/nerd-fonts"
+
+# Ensure USER_HOME is set correctly
+if [ -z "$USER_HOME" ]; then
+    echo "Error: USER_HOME is not set. Please set USER_HOME to the user's home directory."
+    exit 1
+fi
 
 # Check if the directory exists and has any files in it
 if [ -d "$CLONE_DIR" ] && [ "$(ls -A "$CLONE_DIR")" ]; then
@@ -96,9 +103,13 @@ cd "$CLONE_DIR" &&
 sudo -u "$SUDO_USER" git sparse-checkout init --cone &&
 sudo -u "$SUDO_USER" git sparse-checkout set patched-fonts/IBMPlexMono || { echo "Error during git operations."; exit 1; }
 
+# Create the fonts directory if it doesn't exist
+FONTS_DIR="$USER_HOME/.local/share/fonts/"
+echo "Creating fonts directory if it doesn't exist..."
+sudo -u "$SUDO_USER" mkdir -p "$FONTS_DIR" || { echo "Error creating fonts directory $FONTS_DIR."; exit 1; }
+
 # Install the fonts
 echo "Installing fonts..."
-sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.local/share/fonts/" &&
 sudo -u "$SUDO_USER" ./install.sh -S IBMPlexMono || { echo "Error installing fonts."; exit 1; }
 
 echo "######### Custom Fonts Installed #########"
