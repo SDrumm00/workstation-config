@@ -81,6 +81,9 @@ fi
 # Install Nerd Fonts - IBMPlexMono system wide
 echo "######### Installing Custom Fonts #########"
 
+# Define the default value for USER_HOME if not set
+USER_HOME="${USER_HOME:-$HOME}"
+
 # Define the clone directory
 CLONE_DIR="$USER_HOME/tmp/nerd-fonts"
 
