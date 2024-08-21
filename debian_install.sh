@@ -76,16 +76,36 @@ else
 fi
 
 #########################################
-## Make directories for custom config files
+# Install Nerd Fonts - IBMPlexMono system wide
+# Define the directory where you want to clone the repo
+echo "######### Installing Custom Fonts #########"
+
+CLONE_DIR="$USER_HOME/tmp/nerd-fonts"
+
+# Ensure the directory exists, clone the repository, and perform sparse checkout in a single step
+sudo -u "$SUDO_USER" git clone --depth 1 --filter=blob:none --sparse https://github.com/ryanoasis/nerd-fonts.git "$CLONE_DIR" &&
+cd "$CLONE_DIR" &&
+sudo -u "$SUDO_USER" git sparse-checkout init --cone &&
+sudo -u "$SUDO_USER" git sparse-checkout set patched-fonts/IBMPlexMono
+
+# Install the fonts
+# Create installation directory if it doesn't exist
+sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.local/share/fonts/" &&
+sudo -u "$SUDO_USER" ./install.sh -S IBMPlexMono
+
+echo "######### Custom Fonts Installed #########"
+
+#########################################
+# Make directories for custom config files
 echo "Creating directories for custom configs..."
 
 # Get the home directory of the current user under sudo context
 USER_HOME=$(eval echo ~$SUDO_USER)
 
 # Debugging Info
-echo "Running script as: $(whoami)"
-echo "SUDO_USER: $SUDO_USER"
-echo "USER_HOME: $USER_HOME"
+# echo "Running script as: $(whoami)"
+# echo "SUDO_USER: $SUDO_USER"
+# echo "USER_HOME: $USER_HOME"
 
 # Check if we got a valid home directory path
 if [ -z "$USER_HOME" ]; then
@@ -93,32 +113,6 @@ if [ -z "$USER_HOME" ]; then
     exit 1
 fi
 
-#########################################
-# Install Nerd Fonts - IBMPlexMono system wide
-# Define the directory where you want to clone the repo
-CLONE_DIR="$USER_HOME/tmp/nerd-fonts"
-
-# Ensure the directory exists and is empty
-sudo -u "$SUDO_USER" mkdir -p "$CLONE_DIR"
-
-# fetch the fonts
-git clone --depth 1 --filter=blob:none --sparse https://github.com/ryanoasis/nerd-fonts.git "$CLONE_DIR"
-cd "$CLONE_DIR"
-
-# Perform sparse checkout to fetch only the necessary fonts
-git sparse-checkout init --cone
-git sparse-checkout set patched-fonts/IBMPlexMono
-
-# create installation directories
-sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.local/share/fonts/"
-
-# install the fonts
-# https://github.com/ryanoasis/nerd-fonts/blob/master/install.sh
-./install.sh -S IBMPlexMono # -S argument is for systemwide installation
-
-echo "Nerd Fonts - IBMPlexMono installed successfully in /usr/local/share/fonts/NerdFonts"
-
-#########################################
 # Copy files from cloned repo into target directories.
 echo "Copying custom config files..."
 
