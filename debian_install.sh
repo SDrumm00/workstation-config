@@ -79,21 +79,27 @@ fi
 
 #########################################
 # Install Nerd Fonts - IBMPlexMono system wide
-# Define the directory where you want to clone the repo
 echo "######### Installing Custom Fonts #########"
 
 CLONE_DIR="$USER_HOME/tmp/nerd-fonts"
 
-# Ensure the directory exists, clone the repository, and perform sparse checkout in a single step
+# Check if the directory exists and has any files in it
+if [ -d "$CLONE_DIR" ] && [ "$(ls -A "$CLONE_DIR")" ]; then
+    echo "Directory $CLONE_DIR exists and is not empty. Cleaning out directory..."
+    sudo -u "$SUDO_USER" rm -rf "$CLONE_DIR" || { echo "Error cleaning out directory $CLONE_DIR."; exit 1; }
+fi
+
+# Clone the repository and perform sparse checkout
+echo "Cloning Nerd Fonts repository..."
 sudo -u "$SUDO_USER" git clone --depth 1 --filter=blob:none --sparse https://github.com/ryanoasis/nerd-fonts.git "$CLONE_DIR" &&
 cd "$CLONE_DIR" &&
 sudo -u "$SUDO_USER" git sparse-checkout init --cone &&
-sudo -u "$SUDO_USER" git sparse-checkout set patched-fonts/IBMPlexMono
+sudo -u "$SUDO_USER" git sparse-checkout set patched-fonts/IBMPlexMono || { echo "Error during git operations."; exit 1; }
 
 # Install the fonts
-# Create installation directory if it doesn't exist
+echo "Installing fonts..."
 sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.local/share/fonts/" &&
-sudo -u "$SUDO_USER" ./install.sh -S IBMPlexMono
+sudo -u "$SUDO_USER" ./install.sh -S IBMPlexMono || { echo "Error installing fonts."; exit 1; }
 
 echo "######### Custom Fonts Installed #########"
 
