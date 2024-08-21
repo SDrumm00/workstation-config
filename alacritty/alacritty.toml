@@ -1,19 +1,29 @@
 # Config by Scott Drumm @ 2024
+############## Window Settings ##############
 [window]
 
+# Opacity (0-1)
 opacity = 0.9
 
+# Window Padding
 padding.x = 10
 padding.y = 10
 
+# Window Decorations
 decorations = "Full"
 decorations_theme_variant = "Light" # "Dark"
 
+############## Font Settings ################
 [font]
 
+# Font Family
 normal.family = "BlexMono Nerd Font"
 bold.family = "BlexMono Nerd Font"
 italic.family = "BlexMono Nerd Font"
 bold_italic.family = "BlexMono Nerd Font"
 
+# Fonty Style
+style = "Regular"
+
+# Font Size
 size = 12

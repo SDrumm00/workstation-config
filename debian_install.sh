@@ -74,7 +74,7 @@ if [ -z "$USER_HOME" ]; then
 fi
 
 #########################################
-# Install Nerd Fonts - Fira Code system wide
+# Install Nerd Fonts - IBMPlexMono system wide
 # Define the directory where you want to clone the repo
 CLONE_DIR="$USER_HOME/tmp/nerd-fonts"
 
@@ -199,6 +199,6 @@ cleanup_tmp_directory() {
 trap cleanup_tmp_directory EXIT
 
 # TODO
-# still need to configure the fonts in the terminalcopied file
+# still need to configure the fonts in the terminal copied file
 # make sure to do checks such as the directory already exists therefore skip this step
 # install zsh
