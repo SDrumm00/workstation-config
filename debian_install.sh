@@ -99,15 +99,10 @@ echo "######### Custom Fonts Installed #########"
 
 #########################################
 # Make directories for custom config files
-echo "Creating directories for custom configs..."
+echo "######### Load Custom Configs #########"
 
 # Get the home directory of the current user under sudo context
 USER_HOME=$(eval echo ~$SUDO_USER)
-
-# Debugging Info
-# echo "Running script as: $(whoami)"
-# echo "SUDO_USER: $SUDO_USER"
-# echo "USER_HOME: $USER_HOME"
 
 # Check if we got a valid home directory path
 if [ -z "$USER_HOME" ]; then
@@ -115,35 +110,50 @@ if [ -z "$USER_HOME" ]; then
     exit 1
 fi
 
-# Copy files from cloned repo into target directories.
-echo "Copying custom config files..."
-
 # i3 config file
-# Make dir
-sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/.config/i3"
+I3_CONFIG_DIR="$USER_HOME/.config/i3"
 
-# copy files
-cp $USER_HOME/tmp/workstation-config/i3/config "$USER_HOME/.config/i3/"
+# Check if directory exists, create it if it doesn't
+if [ ! -d "$I3_CONFIG_DIR" ]; then
+    echo "Creating directory $I3_CONFIG_DIR"
+    sudo -u "$SUDO_USER" mkdir -p "$I3_CONFIG_DIR"
+else
+    echo "Directory $I3_CONFIG_DIR already exists, skipping creation."
+fi
+
+# Copy configuration file
+echo "Copying i3 config file..."
+cp "$USER_HOME/tmp/workstation-config/i3/config" "$I3_CONFIG_DIR/"
 if [ $? -ne 0 ]; then
-   echo "Error copying bash configuration file."
+   echo "Error copying i3 configuration file."
    exit 1
 fi
 
-echo "i3 config copied successfully! You can find it at $USER_HOME/.config/i3/config"
+echo "i3 configuration file copied successfully."
 
 # Wallpapers
-# Make dir
-sudo -u "$SUDO_USER" mkdir -p "$USER_HOME/Pictures/Wallpapers"
+WALLPAPER_DIR="$USER_HOME/Pictures/Wallpapers"
+WALLPAPER_FILE="$USER_HOME/tmp/workstation-config/wallpapers/Wallpaper-254.png"
 
-# Copy files
-cp $USER_HOME/tmp/workstation-config/wallpapers/Wallpaper-254.png "$USER_HOME/Pictures/Wallpapers/Wallpaper-254.png"
-if [ $? -ne 0 ]; then
-   echo "Error copying wallpaper file."
-   exit 1
+# Check if the directory exists, create it if it doesn't
+if [ ! -d "$WALLPAPER_DIR" ]; then
+    echo "Creating directory $WALLPAPER_DIR"
+    sudo -u "$SUDO_USER" mkdir -p "$WALLPAPER_DIR"
+else
+    echo "Directory $WALLPAPER_DIR already exists, skipping creation."
 fi
 
-echo "Wallpapers copied successfully! You can find it at $USER_HOME/Pictures/Wallpapers/"
+# Copy wallpaper file
+echo "Copying wallpaper file..."
+cp "$WALLPAPER_FILE" "$WALLPAPER_DIR/"
+if [ $? -ne 0 ]; then
+    echo "Error copying wallpaper file."
+    exit 1
+fi
 
+echo "Wallpaper copied successfully! You can find it at $WALLPAPER_DIR/"
+
+########################################################################################################
 # Picom config file
 # Check if target directory exists, create if it doesn't
 PICOM_CONFIG_DIR="$USER_HOME/.config/picom"
