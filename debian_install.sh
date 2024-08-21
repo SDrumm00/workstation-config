@@ -145,16 +145,29 @@ else
     echo "Directory $I3_CONFIG_DIR already exists, skipping creation."
 fi
 
-# Check if the source file exists
-if [ ! -f "$SOURCE_FILE" ]; then
-    echo "Warning: Source file $SOURCE_FILE does not exist. Will copy from source."
+# Check if the target file exists
+if [ -f "$I3_CONFIG_FILE" ]; then
+    echo "Target file $I3_CONFIG_FILE exists and will be overwritten."
+else
+    echo "Target file $I3_CONFIG_FILE does not exist. Copying source file to target."
 fi
 
-# Copy configuration file, overwriting if it already exists (no-op if source file does not exist)
-echo "Copying i3 config file..."
-sudo -u "$SUDO_USER" cp -f "$SOURCE_FILE" "$I3_CONFIG_FILE" || { echo "Error copying i3 configuration file."; exit 1; }
+# Prompt user for confirmation
+read -p "Proceed with overwriting the existing file? (Y/N): " USER_INPUT
 
-echo "i3 config file copied successfully (if it existed)!"
+# Convert user input to lowercase
+USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
+
+# Check user input and proceed or exit
+if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
+    # Copy the configuration file, overwriting if the target file exists
+    echo "Overwriting i3 config file..."
+    sudo -u "$SUDO_USER" cp -f "$SOURCE_FILE" "$I3_CONFIG_FILE" || { echo "Error copying i3 configuration file."; exit 1; }
+    echo "i3 config file operation completed!"
+else
+    echo "Operation aborted by the user."
+    exit 0
+fi
 
 # Wallpapers
 WALLPAPER_DIR="$USER_HOME/Pictures/Wallpapers"
