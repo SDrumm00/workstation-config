@@ -218,7 +218,6 @@ cleanup_tmp_directory() {
 trap cleanup_tmp_directory EXIT
 
 # TODO
-# make sure to do checks such as the directory already exists therefore skip this step
 # install zsh
 # install a login manager and customize it
 # install all my apps from my main machine
