@@ -94,33 +94,27 @@ fi
 # Define the clone directory
 CLONE_DIR="$USER_HOME/tmp/nerd-fonts"
 
-# Ensure USER_HOME is set correctly
-if [ -z "$USER_HOME" ]; then
-    echo "Error: USER_HOME is not set. Please set USER_HOME to the user's home directory."
-    exit 1
-fi
-
 # Check if the directory exists and has any files in it
 if [ -d "$CLONE_DIR" ] && [ "$(ls -A "$CLONE_DIR")" ]; then
     echo "Directory $CLONE_DIR exists and is not empty. Cleaning out directory..."
-    sudo -u "$SUDO_USER" rm -rf "$CLONE_DIR" || { echo "Error cleaning out directory $CLONE_DIR."; exit 1; }
+    sudo -u "$RUNNING_USER" rm -rf "$CLONE_DIR" || { echo "Error cleaning out directory $CLONE_DIR."; exit 1; }
 fi
 
 # Clone the repository and perform sparse checkout
 echo "Cloning Nerd Fonts repository..."
-sudo -u "$SUDO_USER" git clone --depth 1 --filter=blob:none --sparse https://github.com/ryanoasis/nerd-fonts.git "$CLONE_DIR" &&
+sudo -u "$RUNNING_USER" git clone --depth 1 --filter=blob:none --sparse https://github.com/ryanoasis/nerd-fonts.git "$CLONE_DIR" &&
 cd "$CLONE_DIR" &&
-sudo -u "$SUDO_USER" git sparse-checkout init --cone &&
-sudo -u "$SUDO_USER" git sparse-checkout set patched-fonts/IBMPlexMono || { echo "Error during git operations."; exit 1; }
+sudo -u "$RUNNING_USER" git sparse-checkout init --cone &&
+sudo -u "$RUNNING_USER" git sparse-checkout set patched-fonts/IBMPlexMono || { echo "Error during git operations."; exit 1; }
 
 # Create the fonts directory if it doesn't exist
 FONTS_DIR="$USER_HOME/.local/share/fonts/"
 echo "Creating fonts directory if it doesn't exist..."
-sudo -u "$SUDO_USER" mkdir -p "$FONTS_DIR" || { echo "Error creating fonts directory $FONTS_DIR."; exit 1; }
+sudo -u "$RUNNING_USER" mkdir -p "$FONTS_DIR" || { echo "Error creating fonts directory $FONTS_DIR."; exit 1; }
 
 # Install the fonts
 echo "Installing fonts..."
-sudo -u "$SUDO_USER" ./install.sh -S IBMPlexMono || { echo "Error installing fonts."; exit 1; }
+sudo -u "$RUNNING_USER" ./install.sh -S IBMPlexMono || { echo "Error installing fonts."; exit 1; }
 
 echo "######### Custom Fonts Installed #########"
 
