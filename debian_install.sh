@@ -187,33 +187,47 @@ if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
     sudo -u "$SUDO_USER" cp -f "$SOURCE_FILE" "$I3_CONFIG_FILE" || { echo "Error copying i3 configuration file."; exit 1; }
     echo "i3 config file operation completed!"
 else
-    echo "Operation aborted by the user."
-    exit 0
+    echo "Skipping i3 copy operation."
 fi
 
 # Wallpapers
+# Define the paths for the wallpaper directory and file
 WALLPAPER_DIR="$USER_HOME/Pictures/Wallpapers"
 WALLPAPER_FILE="$USER_HOME/tmp/workstation-config/wallpapers/Wallpaper-254.png"
 
 # Check if the directory exists, create it if it doesn't
 if [ ! -d "$WALLPAPER_DIR" ]; then
     echo "Creating directory $WALLPAPER_DIR"
-    sudo -u "$SUDO_USER" mkdir -p "$WALLPAPER_DIR"
+    sudo -u "$SUDO_USER" mkdir -p "$WALLPAPER_DIR" || { echo "Error creating directory $WALLPAPER_DIR."; exit 1; }
 else
     echo "Directory $WALLPAPER_DIR already exists, skipping creation."
 fi
 
-# Copy wallpaper file
-echo "Copying wallpaper file..."
-cp "$WALLPAPER_FILE" "$WALLPAPER_DIR/"
-if [ $? -ne 0 ]; then
-    echo "Error copying wallpaper file."
-    exit 1
+# Check if the source wallpaper file exists
+if [ -f "$WALLPAPER_FILE" ]; then
+    echo "Source wallpaper file $WALLPAPER_FILE exists."
+else
+    echo "Warning: Source wallpaper file $WALLPAPER_FILE does not exist."
 fi
 
-echo "Wallpaper copied successfully! You can find it at $WALLPAPER_DIR/"
+# Prompt user for confirmation
+read -p "Proceed with copying the wallpaper file? (Y/N): " USER_INPUT
+
+# Convert user input to lowercase
+USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
+
+# Check user input and proceed or skip the file copy
+if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
+    # Copy the wallpaper file
+    echo "Copying wallpaper file..."
+    sudo -u "$SUDO_USER" cp -f "$WALLPAPER_FILE" "$WALLPAPER_DIR/" || { echo "Error copying wallpaper file."; exit 1; }
+    echo "Wallpaper copied successfully! You can find it at $WALLPAPER_DIR/"
+else
+    echo "Skipping wallpaper copy operation."
+fi
 
 # Picom config file
+# Define the paths for the Picom config directory and files
 PICOM_CONFIG_DIR="$USER_HOME/.config/picom"
 PICOM_CONF_FILE="$PICOM_CONFIG_DIR/picom.conf"
 SOURCE_CONF_FILE="$USER_HOME/tmp/workstation-config/picom/picom.conf"
@@ -227,16 +241,31 @@ fi
 # Set permissions on target directory
 sudo chown -R "$SUDO_USER:$SUDO_USER" "$PICOM_CONFIG_DIR"
 
-# Check if the picom.conf file already exists
-if [ ! -f "$PICOM_CONF_FILE" ]; then
-    echo "Copying picom config file..."
-    sudo -u "$SUDO_USER" cp "$SOURCE_CONF_FILE" "$PICOM_CONFIG_DIR" || { echo "Error copying picom config file."; exit 1; }
+# Check if the picom.conf file exists
+if [ -f "$PICOM_CONF_FILE" ]; then
+    echo "Picom config file $PICOM_CONF_FILE already exists."
+else
+    echo "Picom config file $PICOM_CONF_FILE does not exist."
+fi
+
+# Prompt user for confirmation
+read -p "Proceed with copying the Picom config file? (Y/N): " USER_INPUT
+
+# Convert user input to lowercase
+USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
+
+# Check user input and proceed or skip the file copy
+if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
+    # Copy the Picom config file
+    echo "Copying Picom config file..."
+    sudo -u "$SUDO_USER" cp -f "$SOURCE_CONF_FILE" "$PICOM_CONF_FILE" || { echo "Error copying Picom config file."; exit 1; }
     echo "Picom config file copied successfully! You can find it at $PICOM_CONFIG_DIR"
 else
-    echo "Picom config file already exists at $PICOM_CONFIG_DIR. Skipping copy."
+    echo "Skipping Picom config file copy operation."
 fi
 
 # Alacritty config file
+# Define the paths for the Alacritty config directory and files
 ALACRITTY_CONFIG_DIR="$USER_HOME/.config/alacritty"
 ALACRITTY_CONF_FILE="$ALACRITTY_CONFIG_DIR/alacritty.toml"
 SOURCE_CONF_FILE="$USER_HOME/tmp/workstation-config/alacritty/alacritty.toml"
@@ -245,18 +274,34 @@ SOURCE_CONF_FILE="$USER_HOME/tmp/workstation-config/alacritty/alacritty.toml"
 if [ ! -d "$ALACRITTY_CONFIG_DIR" ]; then
     echo "Creating directory $ALACRITTY_CONFIG_DIR"
     sudo -u "$SUDO_USER" mkdir -p "$ALACRITTY_CONFIG_DIR" || { echo "Error creating directory $ALACRITTY_CONFIG_DIR."; exit 1; }
+else
+    echo "Directory $ALACRITTY_CONFIG_DIR already exists, skipping creation."
 fi
 
 # Set permissions on the target directory
 sudo chown -R "$SUDO_USER:$SUDO_USER" "$ALACRITTY_CONFIG_DIR"
 
-# Check if the alacritty.toml file already exists
-if [ ! -f "$ALACRITTY_CONF_FILE" ]; then
+# Check if the alacritty.toml file exists
+if [ -f "$ALACRITTY_CONF_FILE" ]; then
+    echo "Alacritty.toml file $ALACRITTY_CONF_FILE already exists."
+else
+    echo "Alacritty.toml file $ALACRITTY_CONF_FILE does not exist."
+fi
+
+# Prompt user for confirmation
+read -p "Proceed with copying the alacritty.toml file? (Y/N): " USER_INPUT
+
+# Convert user input to lowercase
+USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
+
+# Check user input and proceed or skip the file copy
+if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
+    # Copy the alacritty.toml file
     echo "Copying alacritty.toml file..."
-    sudo -u "$SUDO_USER" cp "$SOURCE_CONF_FILE" "$ALACRITTY_CONFIG_DIR" || { echo "Error copying alacritty.toml file."; exit 1; }
+    sudo -u "$SUDO_USER" cp -f "$SOURCE_CONF_FILE" "$ALACRITTY_CONF_FILE" || { echo "Error copying alacritty.toml file."; exit 1; }
     echo "Alacritty.toml file copied successfully! You can find it at $ALACRITTY_CONFIG_DIR"
 else
-    echo "Alacritty.toml file already exists at $ALACRITTY_CONFIG_DIR... Skipping copy."
+    echo "Skipping alacritty.toml file copy operation."
 fi
 
 echo "######### Custom Configs Loaded #########"
