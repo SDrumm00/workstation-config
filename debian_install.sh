@@ -132,25 +132,29 @@ if [ -z "$USER_HOME" ]; then
 fi
 
 # i3 config file
+# Define the path for the i3 config directory and file
 I3_CONFIG_DIR="$USER_HOME/.config/i3"
+I3_CONFIG_FILE="$I3_CONFIG_DIR/config"
+SOURCE_FILE="$USER_HOME/tmp/workstation-config/i3/config"
 
-# Check if directory exists, create it if it doesn't
+# Check if the directory exists, create it if it doesn't
 if [ ! -d "$I3_CONFIG_DIR" ]; then
     echo "Creating directory $I3_CONFIG_DIR"
-    sudo -u "$SUDO_USER" mkdir -p "$I3_CONFIG_DIR"
+    sudo -u "$SUDO_USER" mkdir -p "$I3_CONFIG_DIR" || { echo "Error creating directory $I3_CONFIG_DIR."; exit 1; }
 else
     echo "Directory $I3_CONFIG_DIR already exists, skipping creation."
 fi
 
-# Copy configuration file
-echo "Copying i3 config file..."
-cp "$USER_HOME/tmp/workstation-config/i3/config" "$I3_CONFIG_DIR/"
-if [ $? -ne 0 ]; then
-   echo "Error copying i3 configuration file."
-   exit 1
+# Check if the source file exists
+if [ ! -f "$SOURCE_FILE" ]; then
+    echo "Warning: Source file $SOURCE_FILE does not exist. Will copy from source."
 fi
 
-echo "i3 configuration file copied successfully."
+# Copy configuration file, overwriting if it already exists (no-op if source file does not exist)
+echo "Copying i3 config file..."
+sudo -u "$SUDO_USER" cp -f "$SOURCE_FILE" "$I3_CONFIG_FILE" || { echo "Error copying i3 configuration file."; exit 1; }
+
+echo "i3 config file copied successfully (if it existed)!"
 
 # Wallpapers
 WALLPAPER_DIR="$USER_HOME/Pictures/Wallpapers"
