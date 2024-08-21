@@ -1,10 +1,55 @@
 #!/bin/bash
 
+#########################################
+# Author: Scott Drumm
+# Create Date: 20240810
+#
+# Description:
+# This script is designed with Debian in mind. It will take an existing minimal installation of Debian and perform all
+# of the following:
+#
+# 1) Upgrade the system
+# 2) Install all the requires applications
+# 3) Install any custom fonts
+# 4) Git Clone any custom configs from my repo
+#    - located on my github at https://github.com/SDrumm00/workstation-config
+# 5) Clean itself up and remove any tmp files
+#########################################
+
  # Exit immediately if any command returns a non-zero status.
 set -e 
 
 #########################################
-## Software Installation Step
+# System Upgrade
+#########################################
+
+# Check if there are any upgradable packages
+echo "######### Checking System Upgrade #########"
+
+# Update the package index to get the latest information
+if ! apt-get update -qq; then
+    echo "Error updating package list!"
+    exit 1
+fi
+
+# Check for upgradable packages
+UPGRADEABLE_PACKAGES=$(apt list --upgradable 2>/dev/null | grep -E 'upgradable from' || true)
+
+if [ -n "$UPGRADEABLE_PACKAGES" ]; then
+    echo "Updates are available. Proceeding with system upgrade..."
+    # Perform system upgrade
+    if ! apt-get upgrade -y; then
+        echo "Failed to upgrade the system."
+        exit 1
+    fi
+else
+    echo "######### No Upgrades Available #########"
+fi
+
+#########################################
+# Software Installation
+#########################################
+
 # Define the list of packages to install.
 PACKAGES_TO_INSTALL=(
   "xorg"
@@ -52,33 +97,9 @@ done
 echo "######### Installation Complete #########"
 
 #########################################
-## System Upgrade
-
-# Check if there are any upgradable packages
-echo "######### Checking System Upgrade #########"
-
-# Update the package index to get the latest information
-if ! apt-get update -qq; then
-    echo "Error updating package list!"
-    exit 1
-fi
-
-# Check for upgradable packages
-UPGRADEABLE_PACKAGES=$(apt list --upgradable 2>/dev/null | grep -E 'upgradable from' || true)
-
-if [ -n "$UPGRADEABLE_PACKAGES" ]; then
-    echo "Updates are available. Proceeding with system upgrade..."
-    # Perform system upgrade
-    if ! apt-get upgrade -y; then
-        echo "Failed to upgrade the system."
-        exit 1
-    fi
-else
-    echo "######### No Upgrades Available #########"
-fi
-
+# Install Custom Fonts
 #########################################
-# Install Nerd Fonts - IBMPlexMono system wide
+
 echo "######### Installing Custom Fonts #########"
 
 # Determine the non-root user who invoked the script
@@ -119,7 +140,8 @@ sudo ./install.sh -S IBMPlexMono || { echo "Error installing fonts."; exit 1; }
 echo "######### Custom Fonts Installed #########"
 
 #########################################
-# Make directories for custom config files
+# Load Custom Configs
+#########################################
 echo "######### Load Custom Configs #########"
 
 # Get the home directory of the current user under sudo context
