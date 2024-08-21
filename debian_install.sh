@@ -307,8 +307,10 @@ fi
 echo "######### Custom Configs Loaded #########"
 
 #########################################
-## Clean up temporary directory on successful completion
+# CLEANUP
+#########################################
 
+echo "######### CLEANUP #########"
 # Define a function to clean up temporary directory and contents
 cleanup_tmp_directory() {
     if [ -d "$USER_HOME/tmp" ]; then
