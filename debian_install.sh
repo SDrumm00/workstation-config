@@ -9,21 +9,36 @@
 # of the following:
 #
 # 1) Upgrade the system
-# 2) Install all the requires applications
+# 2) Install all the required applications
 # 3) Install any custom fonts
 # 4) Git Clone any custom configs from my repo
 #    - located on my github at https://github.com/SDrumm00/workstation-config
 # 5) Clean itself up and remove any tmp files
 #########################################
 
- # Exit immediately if any command returns a non-zero status.
+# Exit immediately if any command returns a non-zero status.
 set -e 
+
+# Check if the script is being run with sudo
+if [ "$(id -u)" -ne 0 ]; then
+    echo "This script needs to be run with sudo."
+    exit 1
+fi
+
+# Determine the non-root user who invoked the script
+ORIGINAL_USER="$SUDO_USER"
+USER_HOME="$(eval echo ~$ORIGINAL_USER)"
+
+# Verify USER_HOME is set correctly
+if [ ! -d "$USER_HOME" ]; then
+    echo "Error: USER_HOME ($USER_HOME) is not a valid directory. Ensure the script is run with sudo from a valid user."
+    exit 1
+fi
 
 #########################################
 # System Upgrade
 #########################################
 
-# Check if there are any upgradable packages
 echo "######### Checking System Upgrade #########"
 
 # Update the package index to get the latest information
@@ -102,36 +117,26 @@ echo "######### Installation Complete #########"
 
 echo "######### Installing Custom Fonts #########"
 
-# Determine the non-root user who invoked the script
-ORIGINAL_USER="$(logname)"
-USER_HOME="$(eval echo ~$ORIGINAL_USER)"
-
-# Verify USER_HOME is set correctly
-if [ ! -d "$USER_HOME" ]; then
-    echo "Error: USER_HOME ($USER_HOME) is not a valid directory. Ensure the script is run with sudo from a valid user."
-    exit 1
-fi
-
 # Define the clone directory
 CLONE_DIR="$USER_HOME/tmp/nerd-fonts"
 
 # Check if the directory exists and has any files in it
 if [ -d "$CLONE_DIR" ] && [ "$(ls -A "$CLONE_DIR")" ]; then
     echo "Directory $CLONE_DIR exists and is not empty. Cleaning out directory..."
-    sudo rm -rf "$CLONE_DIR" || { echo "Error cleaning out directory $CLONE_DIR."; exit 1; }
+    rm -rf "$CLONE_DIR" || { echo "Error cleaning out directory $CLONE_DIR."; exit 1; }
 fi
 
 # Clone the repository and perform sparse checkout
 echo "Cloning Nerd Fonts repository..."
-sudo git clone --depth 1 --filter=blob:none --sparse https://github.com/ryanoasis/nerd-fonts.git "$CLONE_DIR" &&
+git clone --depth 1 --filter=blob:none --sparse https://github.com/ryanoasis/nerd-fonts.git "$CLONE_DIR" &&
 cd "$CLONE_DIR" &&
-sudo git sparse-checkout init --cone &&
-sudo git sparse-checkout set patched-fonts/IBMPlexMono || { echo "Error during git operations."; exit 1; }
+git sparse-checkout init --cone &&
+git sparse-checkout set patched-fonts/IBMPlexMono || { echo "Error during git operations."; exit 1; }
 
 # Create the fonts directory if it doesn't exist
 FONTS_DIR="$USER_HOME/.local/share/fonts/"
 echo "Creating fonts directory if it doesn't exist..."
-sudo mkdir -p "$FONTS_DIR" || { echo "Error creating fonts directory $FONTS_DIR."; exit 1; }
+mkdir -p "$FONTS_DIR" || { echo "Error creating fonts directory $FONTS_DIR."; exit 1; }
 
 # Install the fonts
 echo "Installing fonts..."
@@ -142,16 +147,8 @@ echo "######### Custom Fonts Installed #########"
 #########################################
 # Load Custom Configs
 #########################################
+
 echo "######### Load Custom Configs #########"
-
-# Get the home directory of the current user under sudo context
-USER_HOME=$(eval echo ~$SUDO_USER)
-
-# Check if we got a valid home directory path
-if [ -z "$USER_HOME" ]; then
-    echo "Home directory not found."
-    exit 1
-fi
 
 # i3 config file
 # Define the path for the i3 config directory and file
@@ -162,9 +159,7 @@ SOURCE_FILE="$USER_HOME/tmp/workstation-config/i3/config"
 # Check if the directory exists, create it if it doesn't
 if [ ! -d "$I3_CONFIG_DIR" ]; then
     echo "Creating directory $I3_CONFIG_DIR"
-    sudo -u "$SUDO_USER" mkdir -p "$I3_CONFIG_DIR" || { echo "Error creating directory $I3_CONFIG_DIR."; exit 1; }
-else
-    echo "Directory $I3_CONFIG_DIR already exists, skipping creation."
+    mkdir -p "$I3_CONFIG_DIR" || { echo "Error creating directory $I3_CONFIG_DIR."; exit 1; }
 fi
 
 # Check if the target file exists
@@ -184,7 +179,7 @@ USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
 if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
     # Copy the configuration file, overwriting if the target file exists
     echo "Overwriting i3 config file..."
-    sudo -u "$SUDO_USER" cp -f "$SOURCE_FILE" "$I3_CONFIG_FILE" || { echo "Error copying i3 configuration file."; exit 1; }
+    cp -f "$SOURCE_FILE" "$I3_CONFIG_FILE" || { echo "Error copying i3 configuration file."; exit 1; }
     echo "i3 config file operation completed!"
 else
     echo "Skipping i3 copy operation."
@@ -198,9 +193,7 @@ WALLPAPER_FILE="$USER_HOME/tmp/workstation-config/wallpapers/Wallpaper-254.png"
 # Check if the directory exists, create it if it doesn't
 if [ ! -d "$WALLPAPER_DIR" ]; then
     echo "Creating directory $WALLPAPER_DIR"
-    sudo -u "$SUDO_USER" mkdir -p "$WALLPAPER_DIR" || { echo "Error creating directory $WALLPAPER_DIR."; exit 1; }
-else
-    echo "Directory $WALLPAPER_DIR already exists, skipping creation."
+    mkdir -p "$WALLPAPER_DIR" || { echo "Error creating directory $WALLPAPER_DIR."; exit 1; }
 fi
 
 # Check if the source wallpaper file exists
@@ -220,7 +213,7 @@ USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
 if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
     # Copy the wallpaper file
     echo "Overwriting wallpaper file..."
-    sudo -u "$SUDO_USER" cp -f "$WALLPAPER_FILE" "$WALLPAPER_DIR/" || { echo "Error copying wallpaper file."; exit 1; }
+    cp -f "$WALLPAPER_FILE" "$WALLPAPER_DIR/" || { echo "Error copying wallpaper file."; exit 1; }
     echo "Wallpaper copied successfully! You can find it at $WALLPAPER_DIR/"
 else
     echo "Skipping wallpaper operation."
@@ -239,7 +232,7 @@ if [ ! -d "$PICOM_CONFIG_DIR" ]; then
 fi
 
 # Set permissions on target directory
-sudo chown -R "$SUDO_USER:$SUDO_USER" "$PICOM_CONFIG_DIR"
+chown -R "$ORIGINAL_USER:$ORIGINAL_USER" "$PICOM_CONFIG_DIR"
 
 # Check if the picom.conf file exists
 if [ -f "$PICOM_CONF_FILE" ]; then
@@ -258,7 +251,7 @@ USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
 if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
     # Copy the Picom config file
     echo "Overwriting Picom config file..."
-    sudo -u "$SUDO_USER" cp -f "$SOURCE_CONF_FILE" "$PICOM_CONF_FILE" || { echo "Error copying Picom config file."; exit 1; }
+    cp -f "$SOURCE_CONF_FILE" "$PICOM_CONF_FILE" || { echo "Error copying Picom config file."; exit 1; }
     echo "Picom config file copied successfully! You can find it at $PICOM_CONFIG_DIR"
 else
     echo "Skipping Picom config file operation."
@@ -273,13 +266,11 @@ SOURCE_CONF_FILE="$USER_HOME/tmp/workstation-config/alacritty/alacritty.toml"
 # Ensure the target directory exists
 if [ ! -d "$ALACRITTY_CONFIG_DIR" ]; then
     echo "Creating directory $ALACRITTY_CONFIG_DIR"
-    sudo -u "$SUDO_USER" mkdir -p "$ALACRITTY_CONFIG_DIR" || { echo "Error creating directory $ALACRITTY_CONFIG_DIR."; exit 1; }
-else
-    echo "Directory $ALACRITTY_CONFIG_DIR already exists, skipping creation."
+    mkdir -p "$ALACRITTY_CONFIG_DIR" || { echo "Error creating directory $ALACRITTY_CONFIG_DIR."; exit 1; }
 fi
 
 # Set permissions on the target directory
-sudo chown -R "$SUDO_USER:$SUDO_USER" "$ALACRITTY_CONFIG_DIR"
+chown -R "$ORIGINAL_USER:$ORIGINAL_USER" "$ALACRITTY_CONFIG_DIR"
 
 # Check if the alacritty.toml file exists
 if [ -f "$ALACRITTY_CONF_FILE" ]; then
@@ -298,7 +289,7 @@ USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
 if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
     # Copy the alacritty.toml file
     echo "Overwriting alacritty.toml file..."
-    sudo -u "$SUDO_USER" cp -f "$SOURCE_CONF_FILE" "$ALACRITTY_CONF_FILE" || { echo "Error copying alacritty.toml file."; exit 1; }
+    cp -f "$SOURCE_CONF_FILE" "$ALACRITTY_CONF_FILE" || { echo "Error copying alacritty.toml file."; exit 1; }
     echo "Alacritty.toml file copied successfully! You can find it at $ALACRITTY_CONFIG_DIR"
 else
     echo "Skipping alacritty.toml file operation."
