@@ -344,6 +344,48 @@ else
     echo "Alacritty.toml file copied successfully! You can find it at $ALACRITTY_CONFIG_DIR"
 fi
 
+# LightDM config file
+# Define the paths for the LightDM config directory and files
+LIGHTDM_CONFIG_DIR="/etc/lightdm/"
+LIGHTDM_TARGET_CONF_FILE="$LIGHTDM_CONFIG_DIR/lightdm.conf"
+LIGHTDM_SOURCE_CONF_FILE="$USER_HOME/tmp/workstation-config/lightdm/lightdm.conf"
+
+# Ensure the target directory exists
+if [ ! -d "$LIGHTDM_CONFIG_DIR" ]; then
+    echo "Creating directory $LIGHTDM_CONFIG_DIR"
+    mkdir -p "$LIGHTDM_CONFIG_DIR" || { echo "Error creating directory $LIGHTDM_CONFIG_DIR."; exit 1; }
+fi
+
+# Set permissions on the target directory
+# chown -R "$ORIGINAL_USER:$ORIGINAL_USER" "$ALACRITTY_CONFIG_DIR"
+
+# Check if the target lightdm.conf file exists
+if [ -f "$LIGHTDM_TARGET_CONF_FILE" ]; then
+    echo "$LIGHTDM_TARGET_CONF_FILE already exists."
+
+    # Prompt user for confirmation
+    read -p "Proceed with overwriting the existing lightdm.conf file? (Y/N): " USER_INPUT
+
+    # Convert user input to lowercase
+    USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
+
+    # Check user input and proceed or skip the file copy
+    if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
+        echo "Overwriting lightdm.conf file..."
+        cp -f "$LIGHTDM_SOURCE_CONF_FILE" "$LIGHTDM_TARGET_CONF_FILE" || { echo "Error copying lightdm.conf file."; exit 1; }
+        echo "lightdm.conf file copied successfully! You can find it at $LIGHTDM_CONFIG_DIR"
+    else
+        echo "Skipping lightdm.conf file operation."
+    fi
+else
+    echo "LightDM.conf file $LIGHTDM_TARGET_CONF_FILE does not exist. Copying the source file to the target."
+
+    # Proceed to copy the file if it does not exist
+    echo "Copying lightdm.conf file..."
+    cp -f "$LIGHTDM_SOURCE_CONF_FILE" "$LIGHTDM_TARGET_CONF_FILE" || { echo "Error copying lightdm.conf file."; exit 1; }
+    echo "lightdm.conf file copied successfully! You can find it at $LIGHTDM_CONFIG_DIR"
+fi
+
 echo "######### Custom Configs Loaded #########"
 
 #########################################
