@@ -83,7 +83,11 @@ PACKAGES_TO_INSTALL=(
   "dmenu"
   "btop"
   "neofetch"
-  "x11-xserver-utils" # xrandr
+  "x11-xserver-utils", # xrandr
+  "lightdm",
+  "lightdm-gtk-greeter",
+  "lightdm-settings",
+  "lightdm-gtk-greeter-settings"
 )
 
 echo "######### Updating Package List #########"
@@ -370,7 +374,6 @@ cleanup_tmp_directory() {
 trap cleanup_tmp_directory EXIT
 
 # TODO
-# permissions on .local, Pictures and .config are all under root and need changed back to user
 # install zsh
 # install a login manager and customize it
 # install all my apps from my main machine
