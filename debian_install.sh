@@ -200,24 +200,26 @@ fi
 # Check if the target file exists
 if [ -f "$I3_CONFIG_FILE" ]; then
     echo "Target file $I3_CONFIG_FILE exists and will be overwritten."
+
+    # Prompt user for confirmation
+    read -p "Proceed with overwriting the existing file? (Y/N): " USER_INPUT
+
+    # Convert user input to lowercase
+    USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
+
+    # Check user input and proceed or exit
+    if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
+        echo "Overwriting i3 config file..."
+        cp -f "$SOURCE_FILE" "$I3_CONFIG_FILE" || { echo "Error copying i3 configuration file."; exit 1; }
+        echo "i3 config file operation completed!"
+    else
+        echo "Skipping i3 copy operation."
+    fi
 else
     echo "Target file $I3_CONFIG_FILE does not exist. Copying source file to target."
-fi
-
-# Prompt user for confirmation
-read -p "Proceed with overwriting the existing file? (Y/N): " USER_INPUT
-
-# Convert user input to lowercase
-USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
-
-# Check user input and proceed or exit
-if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
-    # Copy the configuration file, overwriting if the target file exists
-    echo "Overwriting i3 config file..."
+    echo "Copying i3 config file..."
     cp -f "$SOURCE_FILE" "$I3_CONFIG_FILE" || { echo "Error copying i3 configuration file."; exit 1; }
     echo "i3 config file operation completed!"
-else
-    echo "Skipping i3 copy operation."
 fi
 
 # Wallpapers
@@ -234,24 +236,28 @@ fi
 # Check if the source wallpaper file exists
 if [ -f "$WALLPAPER_FILE" ]; then
     echo "Source wallpaper file $WALLPAPER_FILE exists."
+    
+    # Prompt user for confirmation
+    read -p "Proceed with overwriting the existing wallpaper file? (Y/N): " USER_INPUT
+
+    # Convert user input to lowercase
+    USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
+
+    # Check user input and proceed or skip the file copy
+    if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
+        echo "Overwriting wallpaper file..."
+        cp -f "$WALLPAPER_FILE" "$WALLPAPER_DIR/" || { echo "Error copying wallpaper file."; exit 1; }
+        echo "Wallpaper copied successfully! You can find it at $WALLPAPER_DIR/"
+    else
+        echo "Skipping wallpaper operation."
+    fi
 else
-    echo "Warning: Source wallpaper file $WALLPAPER_FILE does not exist."
-fi
+    echo "Source wallpaper file $WALLPAPER_FILE does not exist. Proceeding with the operation."
 
-# Prompt user for confirmation
-read -p "Proceed with overwriting the wallpaper file? (Y/N): " USER_INPUT
-
-# Convert user input to lowercase
-USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
-
-# Check user input and proceed or skip the file copy
-if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
-    # Copy the wallpaper file
-    echo "Overwriting wallpaper file..."
+    # Proceed to copy the file if it does not exist
+    echo "Copying wallpaper file..."
     cp -f "$WALLPAPER_FILE" "$WALLPAPER_DIR/" || { echo "Error copying wallpaper file."; exit 1; }
     echo "Wallpaper copied successfully! You can find it at $WALLPAPER_DIR/"
-else
-    echo "Skipping wallpaper operation."
 fi
 
 # Picom config file
@@ -272,24 +278,28 @@ chown -R "$ORIGINAL_USER:$ORIGINAL_USER" "$PICOM_CONFIG_DIR"
 # Check if the picom.conf file exists
 if [ -f "$PICOM_CONF_FILE" ]; then
     echo "Picom config file $PICOM_CONF_FILE already exists."
+
+    # Prompt user for confirmation
+    read -p "Proceed with overwriting the existing Picom config file? (Y/N): " USER_INPUT
+
+    # Convert user input to lowercase
+    USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
+
+    # Check user input and proceed or skip the file copy
+    if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
+        echo "Overwriting Picom config file..."
+        cp -f "$SOURCE_CONF_FILE" "$PICOM_CONF_FILE" || { echo "Error copying Picom config file."; exit 1; }
+        echo "Picom config file copied successfully! You can find it at $PICOM_CONFIG_DIR"
+    else
+        echo "Skipping Picom config file operation."
+    fi
 else
-    echo "Picom config file $PICOM_CONF_FILE does not exist."
-fi
+    echo "Picom config file $PICOM_CONF_FILE does not exist. Copying the source file to the target."
 
-# Prompt user for confirmation
-read -p "Proceed with overwriting the Picom config file? (Y/N): " USER_INPUT
-
-# Convert user input to lowercase
-USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
-
-# Check user input and proceed or skip the file copy
-if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
-    # Copy the Picom config file
-    echo "Overwriting Picom config file..."
+    # Proceed to copy the file if it does not exist
+    echo "Copying Picom config file..."
     cp -f "$SOURCE_CONF_FILE" "$PICOM_CONF_FILE" || { echo "Error copying Picom config file."; exit 1; }
     echo "Picom config file copied successfully! You can find it at $PICOM_CONFIG_DIR"
-else
-    echo "Skipping Picom config file operation."
 fi
 
 # Alacritty config file
@@ -310,24 +320,28 @@ chown -R "$ORIGINAL_USER:$ORIGINAL_USER" "$ALACRITTY_CONFIG_DIR"
 # Check if the alacritty.toml file exists
 if [ -f "$ALACRITTY_CONF_FILE" ]; then
     echo "Alacritty.toml file $ALACRITTY_CONF_FILE already exists."
+
+    # Prompt user for confirmation
+    read -p "Proceed with overwriting the existing alacritty.toml file? (Y/N): " USER_INPUT
+
+    # Convert user input to lowercase
+    USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
+
+    # Check user input and proceed or skip the file copy
+    if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
+        echo "Overwriting alacritty.toml file..."
+        cp -f "$SOURCE_CONF_FILE" "$ALACRITTY_CONF_FILE" || { echo "Error copying alacritty.toml file."; exit 1; }
+        echo "Alacritty.toml file copied successfully! You can find it at $ALACRITTY_CONFIG_DIR"
+    else
+        echo "Skipping alacritty.toml file operation."
+    fi
 else
-    echo "Alacritty.toml file $ALACRITTY_CONF_FILE does not exist."
-fi
+    echo "Alacritty.toml file $ALACRITTY_CONF_FILE does not exist. Copying the source file to the target."
 
-# Prompt user for confirmation
-read -p "Proceed with overwriting the alacritty.toml file? (Y/N): " USER_INPUT
-
-# Convert user input to lowercase
-USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
-
-# Check user input and proceed or skip the file copy
-if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
-    # Copy the alacritty.toml file
-    echo "Overwriting alacritty.toml file..."
+    # Proceed to copy the file if it does not exist
+    echo "Copying alacritty.toml file..."
     cp -f "$SOURCE_CONF_FILE" "$ALACRITTY_CONF_FILE" || { echo "Error copying alacritty.toml file."; exit 1; }
     echo "Alacritty.toml file copied successfully! You can find it at $ALACRITTY_CONFIG_DIR"
-else
-    echo "Skipping alacritty.toml file operation."
 fi
 
 echo "######### Custom Configs Loaded #########"
