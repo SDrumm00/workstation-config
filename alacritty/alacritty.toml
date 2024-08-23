@@ -17,7 +17,7 @@ decorations_theme_variant = "Light" # "Dark"
 [font]
 
 # Font Family
-normal.family = "BlexMono Nerd Font"
+normal.family = "pango:BlexMono Nerd Font"
 bold.family = "BlexMono Nerd Font"
 italic.family = "BlexMono Nerd Font"
 bold_italic.family = "BlexMono Nerd Font"
