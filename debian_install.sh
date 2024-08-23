@@ -84,9 +84,7 @@ PACKAGES_TO_INSTALL=(
   "btop"
   "neofetch"
   "x11-xserver-utils" # xrandr
-  "lightdm"
-  "lightdm-settings"
-  "slick-greeter"
+  "sddm"
 )
 
 echo "######### Updating Package List #########"
@@ -113,35 +111,35 @@ for package in "${PACKAGES_TO_INSTALL[@]}"; do
 done
 
 echo "######### Running DPKG #########"
-# Checking if LightDM is installed and we need to run DPKG to configure it or not
-# Function to check if LightDM is installed
-is_lightdm_installed() {
-    dpkg -l | grep -qw lightdm
+# Checking if SDDM is installed and we need to run DPKG to configure it or not
+# Function to check if SDDM is installed
+is_sddm_installed() {
+    dpkg -l | grep -qw sddm
 }
 
-# Function to check if LightDM is the current display manager
-is_lightdm_display_manager() {
+# Function to check if SDDM is the current display manager
+is_sddm_display_manager() {
     local current_dm
-    current_dm=$(grep -E '^DisplayManager.*' /etc/X11/default-display-manager 2>/dev/null | grep -o 'lightdm')
-    [ "$current_dm" == "lightdm" ]
+    current_dm=$(grep -E '^DisplayManager.*' /etc/X11/default-display-manager 2>/dev/null | grep -o 'sddm')
+    [ "$current_dm" == "sddm" ]
 }
 
-echo "######### Checking LightDM Configuration #########"
+echo "######### Checking SDDM Configuration #########"
 
-# Check if LightDM is installed
-if is_lightdm_installed; then
-    echo "LightDM is installed."
+# Check if SDDM is installed
+if is_SDDM_installed; then
+    echo "SDDM is installed."
 
-    # Check if LightDM is already the display manager
-    if ! is_lightdm_display_manager; then
-        echo "LightDM is not the current display manager. Reconfiguring LightDM..."
-        sudo dpkg-reconfigure lightdm
-        echo "DPKG of LightDM Complete."
+    # Check if SDDM is already the display manager
+    if ! is_sddm_display_manager; then
+        echo "SDDM is not the current display manager. Reconfiguring SDDM..."
+        sudo dpkg-reconfigure sddm
+        echo "DPKG of SDDM Complete."
     else
-        echo "LightDM is already set as the display manager. No reconfiguration needed."
+        echo "SDDM is already set as the display manager. No reconfiguration needed."
     fi
 else
-    echo "LightDM is not installed. No action taken."
+    echo "SDDM is not installed. No action taken."
 fi
 
 echo "######### Installation Complete #########"
@@ -344,46 +342,43 @@ else
     echo "Alacritty.toml file copied successfully! You can find it at $ALACRITTY_CONFIG_DIR"
 fi
 
-# LightDM config file
-# Define the paths for the LightDM config directory and files
-LIGHTDM_CONFIG_DIR="/etc/lightdm/"
-LIGHTDM_TARGET_CONF_FILE="$LIGHTDM_CONFIG_DIR/lightdm.conf"
-LIGHTDM_SOURCE_CONF_FILE="$USER_HOME/tmp/workstation-config/lightdm/lightdm.conf"
+# SDDM config file
+# Define the paths for the SDDM config directory and files
+SDDM_CONFIG_DIR="/etc/"
+SDDM_TARGET_CONF_FILE="$SDDM_CONFIG_DIR/sddm.conf"
+SDDM_SOURCE_CONF_FILE="$USER_HOME/tmp/workstation-config/sddm/sddm.conf"
 
 # Ensure the target directory exists
-if [ ! -d "$LIGHTDM_CONFIG_DIR" ]; then
-    echo "Creating directory $LIGHTDM_CONFIG_DIR"
-    mkdir -p "$LIGHTDM_CONFIG_DIR" || { echo "Error creating directory $LIGHTDM_CONFIG_DIR."; exit 1; }
+if [ ! -d "$SDDM_CONFIG_DIR" ]; then
+    echo "Creating directory $SDDM_CONFIG_DIR"
+    mkdir -p "$SDDM_CONFIG_DIR" || { echo "Error creating directory $SDDM_CONFIG_DIR."; exit 1; }
 fi
 
-# Set permissions on the target directory
-# chown -R "$ORIGINAL_USER:$ORIGINAL_USER" "$ALACRITTY_CONFIG_DIR"
-
-# Check if the target lightdm.conf file exists
-if [ -f "$LIGHTDM_TARGET_CONF_FILE" ]; then
-    echo "$LIGHTDM_TARGET_CONF_FILE already exists."
+# Check if the target sddm.conf file exists
+if [ -f "$SDDM_TARGET_CONF_FILE" ]; then
+    echo "$SDDM_TARGET_CONF_FILE already exists."
 
     # Prompt user for confirmation
-    read -p "Proceed with overwriting the existing lightdm.conf file? (Y/N): " USER_INPUT
+    read -p "Proceed with overwriting the existing sddm.conf file? (Y/N): " USER_INPUT
 
     # Convert user input to lowercase
     USER_INPUT=$(echo "$USER_INPUT" | tr '[:upper:]' '[:lower:]')
 
     # Check user input and proceed or skip the file copy
     if [[ "$USER_INPUT" == "y" || "$USER_INPUT" == "yes" ]]; then
-        echo "Overwriting lightdm.conf file..."
-        cp -f "$LIGHTDM_SOURCE_CONF_FILE" "$LIGHTDM_TARGET_CONF_FILE" || { echo "Error copying lightdm.conf file."; exit 1; }
-        echo "lightdm.conf file copied successfully! You can find it at $LIGHTDM_CONFIG_DIR"
+        echo "Overwriting sddm.conf file..."
+        cp -f "$SDDM_SOURCE_CONF_FILE" "$SDDM_TARGET_CONF_FILE" || { echo "Error copying sddm.conf file."; exit 1; }
+        echo "sddm.conf file copied successfully! You can find it at $SDDM_CONFIG_DIR"
     else
-        echo "Skipping lightdm.conf file operation."
+        echo "Skipping sddm.conf file operation."
     fi
 else
-    echo "LightDM.conf file $LIGHTDM_TARGET_CONF_FILE does not exist. Copying the source file to the target."
+    echo "sddm.conf file $SDDM_TARGET_CONF_FILE does not exist. Copying the source file to the target."
 
     # Proceed to copy the file if it does not exist
-    echo "Copying lightdm.conf file..."
-    cp -f "$LIGHTDM_SOURCE_CONF_FILE" "$LIGHTDM_TARGET_CONF_FILE" || { echo "Error copying lightdm.conf file."; exit 1; }
-    echo "lightdm.conf file copied successfully! You can find it at $LIGHTDM_CONFIG_DIR"
+    echo "Copying sddm.conf file..."
+    cp -f "$SDDM_SOURCE_CONF_FILE" "$SDDM_TARGET_CONF_FILE" || { echo "Error copying sddm.conf file."; exit 1; }
+    echo "sddm.conf file copied successfully! You can find it at $SDDM_CONFIG_DIR"
 fi
 
 echo "######### Custom Configs Loaded #########"
