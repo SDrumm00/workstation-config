@@ -398,7 +398,7 @@ for dir in "${DIRECTORIES[@]}"; do
     ls -ld "$dir"
 done
 
-echo "Script completed."
+echo "Directory Permissions Restored."
 
 #########################################
 # CLEANUP
