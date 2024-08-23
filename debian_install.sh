@@ -83,9 +83,9 @@ PACKAGES_TO_INSTALL=(
   "dmenu"
   "btop"
   "neofetch"
-  "x11-xserver-utils", # xrandr
-  "lightdm",
-  "lightdm-settings",
+  "x11-xserver-utils" # xrandr
+  "lightdm"
+  "lightdm-settings"
   "slick-greeter"
 )
 
