@@ -298,6 +298,60 @@ fi
 echo "######### Custom Configs Loaded #########"
 
 #########################################
+# PERMISSIONS
+#########################################
+# Some directory permissions were set to root and need set back to the non-root user
+# Define directories to adjust permissions
+DIRECTORIES=(
+    "$USER_HOME/.local"
+    "$USER_HOME/.config"
+    "$USER_HOME/Pictures"
+)
+
+# Function to set ownership and permissions
+set_permissions() {
+    local dir="$1"
+
+    # Check if the directory exists
+    if [ -d "$dir" ]; then
+        echo "Setting ownership for directory: $dir"
+        
+        # Attempt to change ownership
+        if ! sudo chown -R "$USER:$USER" "$dir"; then
+            echo "Error: Failed to change ownership for $dir"
+            exit 1
+        fi
+
+        # Ensure permissions are set correctly
+        echo "Setting permissions for directory: $dir"
+        if ! chmod -R u+rwX,g+rwX,o+rX "$dir"; then
+            echo "Error: Failed to set permissions for $dir"
+            exit 1
+        fi
+
+        echo "Permissions set for $dir"
+    else
+        echo "Directory $dir does not exist. Skipping..."
+    fi
+}
+
+# Loop through directories and set permissions
+for dir in "${DIRECTORIES[@]}"; do
+    set_permissions "$dir"
+done
+
+echo "Permissions have been set successfully."
+
+# Optional: Output directory ownership and permissions for verification
+echo "Verifying directory ownership and permissions:"
+for dir in "${DIRECTORIES[@]}"; do
+    echo "Directory: $dir"
+    ls -ld "$dir"
+done
+
+echo "Script completed."
+
+#########################################
 # CLEANUP
 #########################################
 
@@ -316,6 +370,7 @@ cleanup_tmp_directory() {
 trap cleanup_tmp_directory EXIT
 
 # TODO
+# permissions on .local, Pictures and .config are all under root and need changed back to user
 # install zsh
 # install a login manager and customize it
 # install all my apps from my main machine
