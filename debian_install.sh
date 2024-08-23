@@ -317,7 +317,7 @@ set_permissions() {
         echo "Setting ownership for directory: $dir"
         
         # Attempt to change ownership
-        if ! sudo chown -R "$USER:$USER" "$dir"; then
+        if ! sudo chown -R "$ORIGINAL_USER:$ORIGINAL_USER" "$dir"; then
             echo "Error: Failed to change ownership for $dir"
             exit 1
         fi
