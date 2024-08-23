@@ -456,6 +456,6 @@ cleanup_tmp_directory() {
 trap cleanup_tmp_directory EXIT
 
 # TODO
+# install SLiM as my login manager
 # install zsh
-# customize lightDM
 # install all my apps from my main machine
