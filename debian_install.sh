@@ -406,5 +406,5 @@ trap cleanup_tmp_directory EXIT
 
 # TODO
 # install zsh
-# install a login manager and customize it
+# customize lightDM
 # install all my apps from my main machine
