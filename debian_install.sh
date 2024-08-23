@@ -112,6 +112,38 @@ for package in "${PACKAGES_TO_INSTALL[@]}"; do
    fi
 done
 
+echo "######### Running DPKG #########"
+# Checking if LightDM is installed and we need to run DPKG to configure it or not
+# Function to check if LightDM is installed
+is_lightdm_installed() {
+    dpkg -l | grep -qw lightdm
+}
+
+# Function to check if LightDM is the current display manager
+is_lightdm_display_manager() {
+    local current_dm
+    current_dm=$(grep -E '^DisplayManager.*' /etc/X11/default-display-manager 2>/dev/null | grep -o 'lightdm')
+    [ "$current_dm" == "lightdm" ]
+}
+
+echo "######### Checking LightDM Configuration #########"
+
+# Check if LightDM is installed
+if is_lightdm_installed; then
+    echo "LightDM is installed."
+
+    # Check if LightDM is already the display manager
+    if ! is_lightdm_display_manager; then
+        echo "LightDM is not the current display manager. Reconfiguring LightDM..."
+        sudo dpkg-reconfigure lightdm
+        echo "DPKG of LightDM Complete."
+    else
+        echo "LightDM is already set as the display manager. No reconfiguration needed."
+    fi
+else
+    echo "LightDM is not installed. No action taken."
+fi
+
 echo "######### Installation Complete #########"
 
 #########################################
