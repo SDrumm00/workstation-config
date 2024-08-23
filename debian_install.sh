@@ -85,9 +85,8 @@ PACKAGES_TO_INSTALL=(
   "neofetch"
   "x11-xserver-utils", # xrandr
   "lightdm",
-  "lightdm-gtk-greeter",
   "lightdm-settings",
-  "lightdm-gtk-greeter-settings"
+  "slick-greeter"
 )
 
 echo "######### Updating Package List #########"
